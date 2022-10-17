@@ -17,4 +17,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString(callSuper = true)
 public class PostHashTag extends BaseEntity {
+	private Long memberId;
+	private Long postId;
+	private Long postKeywordId;
 }
