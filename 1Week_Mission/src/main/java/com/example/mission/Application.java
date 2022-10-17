@@ -1,5 +1,4 @@
-package com.example.Week_Mission;
-
+package com.example.mission;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

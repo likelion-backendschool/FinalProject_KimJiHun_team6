@@ -1,4 +1,4 @@
-package com.example.Week_Mission;
+package com.example.mission;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
