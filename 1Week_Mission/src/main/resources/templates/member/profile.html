@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>프로파일</title>
+</head>
+
+<body>
+<section>
+    <div class="container">
+        <h1>프로파일</h1>
+
+        <div>이메일 : <span th:text="${#authentication.principal.email}"></span></div>
+        <div>아이디 : <span th:text="${#authentication.principal.nickname}"></span></div>
+
+    </div>
+</section>
+</body>
+</html>

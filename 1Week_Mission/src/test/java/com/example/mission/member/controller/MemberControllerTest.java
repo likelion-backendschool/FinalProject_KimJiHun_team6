@@ -103,7 +103,6 @@ public class MemberControllerTest {
 	@DisplayName("user4로 로그인 후 프로필페이지에 접속하면 user4의 이메일이 보여야 한다.")
 	@WithUserDetails("user4")
 	void memberlogin_PostApi_Test() throws Exception {
-		// mockMvc로 로그인 처리
 		ResultActions resultActions = mvc
 			.perform(
 				get("/member/profile")
@@ -113,7 +112,7 @@ public class MemberControllerTest {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().handlerType(MemberController.class))
-			.andExpect(handler().methodName("showProfile"))
+			.andExpect(handler().methodName("memberProfile"))
 			.andExpect(content().string(containsString("user4@test.com")));
 	}
 }
