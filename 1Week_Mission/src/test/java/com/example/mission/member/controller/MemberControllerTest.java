@@ -1,6 +1,5 @@
 package com.example.mission.member.controller;
 
-import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 import javax.transaction.Transactional;
@@ -29,7 +28,7 @@ public class MemberControllerTest {
 	@DisplayName("회원가입폼 Get url 테스트")
 	void t1() throws Exception {
 		ResultActions resultActions = mvc
-			.perform(get("member/join"))
+			.perform(get("/member/join"))
 			.andDo(print());
 
 		resultActions
