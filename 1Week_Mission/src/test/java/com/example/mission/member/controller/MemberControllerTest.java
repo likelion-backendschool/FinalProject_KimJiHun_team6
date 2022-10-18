@@ -1,6 +1,7 @@
 package com.example.mission.member.controller;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -95,5 +97,23 @@ public class MemberControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().handlerType(MemberController.class))
 			.andExpect(handler().methodName("memberLogin"));
+	}
+
+	@Test
+	@DisplayName("user4로 로그인 후 프로필페이지에 접속하면 user4의 이메일이 보여야 한다.")
+	@WithUserDetails("user4")
+	void memberlogin_PostApi_Test() throws Exception {
+		// mockMvc로 로그인 처리
+		ResultActions resultActions = mvc
+			.perform(
+				get("/member/profile")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("showProfile"))
+			.andExpect(content().string(containsString("user4@test.com")));
 	}
 }
