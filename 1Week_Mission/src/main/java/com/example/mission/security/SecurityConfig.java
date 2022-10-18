@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
 public class SecurityConfig {
@@ -23,11 +24,13 @@ public class SecurityConfig {
 			)
 			.cors().disable()
 			.csrf().disable()
-			.httpBasic().disable()
-			.formLogin().disable()
-			.sessionManagement(sessionManagement ->
-				sessionManagement.sessionCreationPolicy(STATELESS)
-			);
+			.formLogin()
+			.loginPage("/member/login")
+			.defaultSuccessUrl("/")
+			.and()
+			.logout()
+			.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+			.logoutSuccessUrl("/");
 
 		return http.build();
 	}
