@@ -1,7 +1,5 @@
 package com.example.mission.security;
 
-import static org.springframework.security.config.http.SessionCreationPolicy.*;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,4 +32,6 @@ public class SecurityConfig {
 
 		return http.build();
 	}
+
+
 }

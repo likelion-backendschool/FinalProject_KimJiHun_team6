@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -36,7 +37,7 @@ public class MemberControllerTest {
 
 	@Test
 	@DisplayName("Get /member/join 은 회원가입 폼 가져오는 URL 이다.")
-	void t1() throws Exception {
+	void memberJoin_GetApi_Test() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(get("/member/join"))
 			.andDo(print());
@@ -45,11 +46,12 @@ public class MemberControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().handlerType(MemberController.class))
 			.andExpect(handler().methodName("memberJoin"));
-
 	}
 	@Test
 	@DisplayName("POST /member/join 은 회원가입 처리 URL 이다.")
-	void t2() throws Exception {
+	@Rollback(false)
+	void memberJoin_Api_Test() throws Exception {
+		// When
 		ResultActions resultActions = mvc.perform(
 				multipart("/member/join")
 					.param("username", "user5")
@@ -62,10 +64,11 @@ public class MemberControllerTest {
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/member/login"))
 			.andExpect(handler().handlerType(MemberController.class))
-			.andExpect(handler().methodName("join"));
+			.andExpect(handler().methodName("memberJoinPost"));
 
 		Member member = memberService.getMemberById(5L);
 
+		// Then
 		assertThat(member).isNotNull();
 	}
 }
