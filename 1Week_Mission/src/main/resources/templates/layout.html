@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<html prefix="og: https://ogp.me/ns#">
+<head>
+
+    <title>멋북스📚</title>
+    <meta property="og:title" content="도서 판매 플렛폼" />
+    <meta property="og:type" content="website" />
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- 폰트 어썸 -->
+    <script src="https://use.fontawesome.com/7fa2757e91.js"></script>
+    <!-- 데이지 UI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.24.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <!-- 테일윈드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--i태그-->
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
+    <!--jquery-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'GmarketSansMedium';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        html > body {
+            font-family: "GmarketSansMedium";
+            text-underline-position: under;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- 네비게이션바 -->
+<nav th:replace="navbar :: navbarFragment"></nav>
+<!-- 기본 템플릿 안에 삽입될 내용 Start -->
+<div class="flex-grow">
+    <th:block layout:fragment="content"></th:block>
+</div>
+<!-- 기본 템플릿 안에 삽입될 내용 End -->
+
+<!-- footer -->
+<footer th:replace="footer :: footerFragment"></footer>
+</body>
+</html>
