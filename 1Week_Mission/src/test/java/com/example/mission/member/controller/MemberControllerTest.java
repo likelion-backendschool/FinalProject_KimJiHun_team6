@@ -53,7 +53,7 @@ public class MemberControllerTest {
 	}
 	@Test
 	@DisplayName("POST /member/join 은 회원가입 처리 URL 이다.")
-	void memberJoin_Api_Test() throws Exception {
+	void memberJoin_PostApi_Test() throws Exception {
 		// Given
 		MemberDto memberDto = MemberDto.builder()
 			.username("user5")
@@ -82,5 +82,18 @@ public class MemberControllerTest {
 
 		// Then
 		assertThat(member).isNotNull();
+	}
+
+	@Test
+	@DisplayName("Get /member/login 은 로그인폼을 가져오는 URL 이다.")
+	void memberlogin_GetApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/member/login"))
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberLogin"));
 	}
 }
