@@ -1,9 +1,11 @@
 package com.example.mission.member.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 
 	private final MemberService memberService;
+	private final PasswordEncoder passwordEncoder;
 
 	@PreAuthorize("isAnonymous()")
 	@GetMapping("/join")
@@ -26,8 +29,9 @@ public class MemberController {
 	}
 
 	@PostMapping("/join")
-	public String memberJoinPost(@RequestParam MemberDto memberDto) {
-		memberService.join(memberDto.getUsername(), memberDto.getPassword(), memberDto.getEmail());
+	public String memberJoinPost(@RequestBody MemberDto memberDto) {
+		memberService.join(memberDto.getUsername(),
+			passwordEncoder.encode(memberDto.getPassword()), memberDto.getEmail());
 		return "redirect:/member/login";
 	}
 

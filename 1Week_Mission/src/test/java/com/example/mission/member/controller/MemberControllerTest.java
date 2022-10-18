@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import com.example.mission.member.dto.MemberDto;
 import com.example.mission.member.entity.Member;
 import com.example.mission.member.service.MemberService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,6 +34,8 @@ public class MemberControllerTest {
 
 	@Autowired
 	private MockMvc mvc;
+	@Autowired
+	private ObjectMapper objectMapper;
 	@Autowired
 	private MemberService memberService;
 
@@ -59,13 +62,15 @@ public class MemberControllerTest {
 			.email("user5@test.com")
 			.build();
 
+		String content = objectMapper.writeValueAsString(memberDto);
+
 		// When
 		ResultActions resultActions = mvc.perform(
 				post("/member/join")
-					.param("username", "user5")
-					.param("password", "1234")
-					.param("email", "user5@test.com")
-					.characterEncoding("UTF-8"))
+					.content(content)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)
+			)
 			.andDo(print());
 
 		resultActions
