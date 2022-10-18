@@ -53,7 +53,6 @@ public class MemberControllerTest {
 	}
 	@Test
 	@DisplayName("POST /member/join 은 회원가입 처리 URL 이다.")
-	@Rollback(false)
 	void memberJoin_Api_Test() throws Exception {
 		// Given
 		MemberDto memberDto = MemberDto.builder()
