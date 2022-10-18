@@ -1,13 +1,19 @@
 package com.example.mission.security;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+@Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
 	@Bean
@@ -15,10 +21,8 @@ public class SecurityConfig {
 		HttpSecurity http, AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		http.authorizeRequests(
 				authorizeRequests -> authorizeRequests
-					.antMatchers("/member/login", "/member/join")
+					.antMatchers("/**")
 					.permitAll()
-					.anyRequest()
-					.authenticated()
 			)
 			.cors().disable()
 			.csrf().disable()
@@ -33,5 +37,8 @@ public class SecurityConfig {
 		return http.build();
 	}
 
-
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 }

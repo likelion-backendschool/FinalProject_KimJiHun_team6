@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.nio.charset.StandardCharsets;
 
+import com.example.mission.member.dto.MemberDto;
 import com.example.mission.member.entity.Member;
 import com.example.mission.member.service.MemberService;
 
@@ -51,9 +52,16 @@ public class MemberControllerTest {
 	@DisplayName("POST /member/join 은 회원가입 처리 URL 이다.")
 	@Rollback(false)
 	void memberJoin_Api_Test() throws Exception {
+		// Given
+		MemberDto memberDto = MemberDto.builder()
+			.username("user5")
+			.password("1234")
+			.email("user5@test.com")
+			.build();
+
 		// When
 		ResultActions resultActions = mvc.perform(
-				multipart("/member/join")
+				post("/member/join")
 					.param("username", "user5")
 					.param("password", "1234")
 					.param("email", "user5@test.com")

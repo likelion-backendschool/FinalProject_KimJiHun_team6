@@ -19,7 +19,7 @@ public class MemberController {
 
 	private final MemberService memberService;
 
-	@PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAnonymous()")
 	@GetMapping("/join")
 	public String memberJoin() {
 		return "member/join_form";
