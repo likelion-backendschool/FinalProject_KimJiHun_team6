@@ -3,6 +3,7 @@ package com.example.mission.member.controller;
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.mission.member.dto.JoinDto;
 import com.example.mission.member.service.MemberService;
+import com.example.mission.security.dto.MemberContext;
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,4 +52,16 @@ public class MemberController {
 	public String memberProfile() {
 		return "member/profile";
 	}
+
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/modify")
+	public String memberModifyForm() {
+		return "member/modify";
+	}
+
+	@PostMapping("/modify")
+	public String memberModify(@AuthenticationPrincipal MemberContext memberContext) {
+		return "member/profile";
+	}
+
 }
