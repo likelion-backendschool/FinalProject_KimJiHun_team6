@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import com.example.mission.post.dto.PostModifyDto;
 import com.example.mission.post.dto.WriteDto;
 import com.example.mission.post.entity.Post;
 import com.example.mission.post.service.PostService;
+import com.example.mission.security.dto.MemberContext;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,8 +43,8 @@ public class PostController {
 	}
 
 	@PostMapping("/write")
-	public String postWritePost(@Valid WriteDto writeDto) {
-		postService.write(writeDto.getSubject(), writeDto.getContent());
+	public String postWritePost(@AuthenticationPrincipal MemberContext memberContext, @Valid WriteDto writeDto) {
+		postService.write(memberContext.getId(), writeDto.getSubject(), writeDto.getContent());
 		return "redirect:/post/list";
 	}
 

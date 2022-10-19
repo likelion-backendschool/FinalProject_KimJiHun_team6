@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.mission.member.entity.Member;
+import com.example.mission.member.repository.MemberRepository;
 import com.example.mission.post.entity.Post;
 import com.example.mission.post.repository.PostRepository;
+import com.example.mission.security.dto.MemberContext;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,8 +17,11 @@ import lombok.RequiredArgsConstructor;
 public class PostService {
 
 	private final PostRepository postRepository;
-	public void write(String subject, String content) {
+	private final MemberRepository memberRepository;
+	public void write(Long id, String subject, String content) {
+		Member member = memberRepository.findById(id).orElse(null);
 		Post post = Post.builder()
+			.member(member)
 			.subject(subject)
 			.content(content)
 			.build();

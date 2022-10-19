@@ -1,8 +1,10 @@
 package com.example.mission.post.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 import com.example.mission.base.entity.BaseEntity;
+import com.example.mission.member.entity.Member;
 import com.example.mission.post.dto.PostModifyDto;
 
 import lombok.AllArgsConstructor;
@@ -23,6 +25,9 @@ public class Post extends BaseEntity {
 	private String subject;
 	private String content;
 	private String contentHtml;
+
+	@ManyToOne
+	private Member member;
 
 	public PostModifyDto transPostModifyDto() {
 		PostModifyDto postModifyDto = PostModifyDto.builder()
