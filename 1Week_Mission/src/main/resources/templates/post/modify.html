@@ -6,7 +6,7 @@
 
 <th:bloack layout:fragment="content"  class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <h1>글쓰기</h1>
-    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" th:action="@{/post/modify}" th:object="${postModifyDto}" method="post">
+    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" th:object="${postModifyDto}" method="post">
         <div>
             <span>제목</span>
             <input type="text" th:field="*{subject}" name="subject">

@@ -53,11 +53,18 @@ public class PostController {
 		return "post/detail";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{id}/modify")
 	public String postModify(Model model, @PathVariable("id") Long id) {
 		Post post = postService.findById(id);
 		PostModifyDto postModifyDto = post.transPostModifyDto();
 		model.addAttribute("postModifyDto", postModifyDto);
 		return "post/modify";
+	}
+
+	@PostMapping("/{id}/modify")
+	public String postModifyPost(@Valid PostModifyDto postModifyDto, @PathVariable("id") Long id) {
+		postService.modify(id, postModifyDto.getSubject(), postModifyDto.getContent());
+		return "redirect:/post/list";
 	}
 }

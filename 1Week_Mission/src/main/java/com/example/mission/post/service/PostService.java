@@ -29,4 +29,11 @@ public class PostService {
 	public Post findById(Long id) {
 		return postRepository.findById(id).orElse(null);
 	}
+
+	public void modify(Long id, String subject, String content) {
+		Post post = postRepository.findById(id).orElse(null);
+		post.setSubject(subject);
+		post.setContent(content);
+		postRepository.save(post);
+	}
 }
