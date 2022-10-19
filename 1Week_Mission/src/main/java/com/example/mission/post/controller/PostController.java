@@ -10,10 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.mission.post.dto.WriteDto;
+import com.example.mission.post.service.PostService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/post")
+@RequiredArgsConstructor
 public class PostController {
+
+	private final PostService postService;
 
 	@GetMapping("/list")
 	@ResponseBody
@@ -29,6 +35,7 @@ public class PostController {
 
 	@PostMapping("/write")
 	public String postWritePost(@Valid WriteDto writeDto) {
+		postService.write(writeDto.getSubject(), writeDto.getContent());
 		return "redirect:/post/list";
 	}
 
