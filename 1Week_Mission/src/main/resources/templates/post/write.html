@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+
+      layout:decorate="~{layout}">
+
+<th:bloack layout:fragment="content"  class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+            <h1>글쓰기</h1>
+            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" th:action="@{/post/write}" method="post">
+                <div>
+                    <span>제목</span>
+                    <input type="text" name="subject">
+                </div>
+                <div>
+                    <span>내용</span>
+                    <textarea name="content"></textarea>
+                </div>
+                <div>
+                    <span>글쓰기</span>
+                </div>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    작성
+                </button>
+            </form>
+</th:bloack>
+</html>

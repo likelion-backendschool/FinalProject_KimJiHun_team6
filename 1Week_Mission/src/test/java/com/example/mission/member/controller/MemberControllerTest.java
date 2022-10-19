@@ -57,6 +57,7 @@ public class MemberControllerTest {
 		JoinDto memberDto = JoinDto.builder()
 			.username("user5")
 			.password("1234")
+			.passwordConfirm("1234")
 			.email("user5@test.com")
 			.build();
 
@@ -66,8 +67,8 @@ public class MemberControllerTest {
 		ResultActions resultActions = mvc.perform(
 				post("/member/join")
 					.content(content)
-					.contentType(MediaType.APPLICATION_JSON)
-					.accept(MediaType.APPLICATION_JSON)
+					.contentType(MediaType.ALL)
+					.accept(MediaType.ALL)
 			)
 			.andDo(print());
 
