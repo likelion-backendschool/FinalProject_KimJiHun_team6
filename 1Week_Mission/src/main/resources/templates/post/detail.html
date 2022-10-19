@@ -7,5 +7,11 @@
 <th:bloack layout:fragment="content"  class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <h1 th:text="${post.subject}"></h1>
     <div th:text="${post.content}"></div>
+    <div class="my-3">
+        <a th:href="@{|/post/${post.id}/modify|}" class="btn btn-sm btn-outline-secondary"
+           sec:authorize="isAuthenticated()"
+           th:if="${post.member != null and #authentication.principal.username == post.member.username}"
+           th:text="수정"></a>
+    </div>
 </th:bloack>
 </html>
