@@ -5,22 +5,51 @@
       layout:decorate="~{layout}">
 
 <th:bloack layout:fragment="content"  class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-            <h1>글쓰기</h1>
-            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" th:action="@{/post/write}" method="post">
-                <div>
-                    <span>제목</span>
-                    <input type="text" name="subject">
+    <script>
+function ArticleSave__submitForm(form) {
+    form.subject.value = form.subject.value.trim();
+    if ( form.subject.value.length == 0 ) {
+        alert('제목을 입력해주세요.');
+         form.subject.focus();
+         return;
+     }
+     const editor = $(form).find(".toast-ui-editor").data("data-toast-editor");
+     const markdown = editor.getMarkdown();
+     console.log(markdown);
+     form.content.value = markdown.trim();
+     if (form.content.value.length == 0) {
+         alert("내용을 입력해주세요");
+         editor.focus();
+         return;
+     }
+     form.submit();
+ }
+ </script>
+    <section>
+        <div class="container px-3 mx-auto">
+            <h1 class="font-bold text-lg"><i class="fa-solid fa-pen"></i> 작성</h1>
+            <form method="POST" th:object="${writeDto}" onsubmit="ArticleSave__submitForm(this); return false;">
+                <input type="hidden" name="content" />
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text">제목</span>
+                    </label>
+                    <input name="subject" type="text" maxlength="50" placeholder="제목을 입력해주세요." class="input input-bordered w-full max-w-xs" />
                 </div>
-                <div>
-                    <span>내용</span>
-                    <textarea name="content"></textarea>
+                <div class="form-control w-full">
+                    <label class="label">
+                            <span class="label-text">내용</span>
+                    </label>
+                    <div class="toast-ui-editor" toast-ui-editor--height="calc(100vh - 300px)"></div>
                 </div>
-                <div>
-                    <span>글쓰기</span>
+
+                <div class="mt-3">
+                    <div class="btns">
+                        <input class="btn btn-primary btn-outline" type="submit" value="작성" />
+                    </div>
                 </div>
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                    작성
-                </button>
             </form>
+        </div>
+    </section>
 </th:bloack>
 </html>
