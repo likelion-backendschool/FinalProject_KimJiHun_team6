@@ -3,6 +3,7 @@ package com.example.mission.post.entity;
 import javax.persistence.Entity;
 
 import com.example.mission.base.entity.BaseEntity;
+import com.example.mission.post.dto.PostModifyDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,13 @@ public class Post extends BaseEntity {
 	private String subject;
 	private String content;
 	private String contentHtml;
+
+	public PostModifyDto transPostModifyDto() {
+		PostModifyDto postModifyDto = PostModifyDto.builder()
+			.id(super.getId())
+			.subject(subject)
+			.content(content)
+			.build();
+		return postModifyDto;
+	}
 }

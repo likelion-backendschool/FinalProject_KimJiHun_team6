@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.mission.post.dto.PostModifyDto;
 import com.example.mission.post.dto.WriteDto;
 import com.example.mission.post.entity.Post;
 import com.example.mission.post.service.PostService;
@@ -50,5 +51,13 @@ public class PostController {
 		Post post = postService.findById(id);
 		model.addAttribute("post", post);
 		return "post/detail";
+	}
+
+	@GetMapping("/{id}/modify")
+	public String postModify(Model model, @PathVariable("id") Long id) {
+		Post post = postService.findById(id);
+		PostModifyDto postModifyDto = post.transPostModifyDto();
+		model.addAttribute("postModifyDto", postModifyDto);
+		return "post/modify";
 	}
 }
