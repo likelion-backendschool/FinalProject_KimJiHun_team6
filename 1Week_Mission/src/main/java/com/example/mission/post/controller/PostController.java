@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,4 +45,10 @@ public class PostController {
 		return "redirect:/post/list";
 	}
 
+	@GetMapping("/{id}")
+	public String postDetail(Model model, @PathVariable("id") Long id) {
+		Post post = postService.findById(id);
+		model.addAttribute("post", post);
+		return "post/detail";
+	}
 }

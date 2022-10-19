@@ -14,7 +14,9 @@
         </thead>
         <tbody>
         <tr th:each="post : ${posts}">
-            <td th:text="${post.subject}"></td>
+            <td>
+                <a th:href="@{|/post/${post.id}|}" th:text="${post.subject}"></a>
+            </td>
             <td th:text="${post.createDate}"></td>
         </tr>
         </tbody>
