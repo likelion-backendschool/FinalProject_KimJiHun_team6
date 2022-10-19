@@ -1,5 +1,7 @@
 package com.example.mission.post.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.mission.post.entity.Post;
@@ -18,5 +20,9 @@ public class PostService {
 			.content(content)
 			.build();
 		postRepository.save(post);
+	}
+
+	public List<Post> findAll() {
+		return postRepository.findAll();
 	}
 }
