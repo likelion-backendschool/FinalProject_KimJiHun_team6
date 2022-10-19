@@ -12,6 +12,20 @@
            sec:authorize="isAuthenticated()"
            th:if="${post.member != null and #authentication.principal.username == post.member.username}"
            th:text="수정"></a>
+        <a href="javascript:void(0);" th:data-uri="@{|/post/${post.id}/delete|}" class="delete btn btn-sm btn-outline-secondary"
+            sec:authorize="isAuthenticated()"
+            th:if="${post.member != null and #authentication.principal.username == post.member.username}"
+            th:text="삭제"></a>
     </div>
 </th:bloack>
+<script layout:fragment="script" type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
 </html>

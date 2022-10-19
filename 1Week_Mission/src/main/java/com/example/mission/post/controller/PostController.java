@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.mission.post.dto.PostModifyDto;
 import com.example.mission.post.dto.WriteDto;
@@ -67,6 +69,17 @@ public class PostController {
 	@PostMapping("/{id}/modify")
 	public String postModifyPost(@Valid PostModifyDto postModifyDto, @PathVariable("id") Long id) {
 		postService.modify(id, postModifyDto.getSubject(), postModifyDto.getContent());
+		return "redirect:/post/list";
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/{id}/delete")
+	public String postDelete(@AuthenticationPrincipal MemberContext memberContext, @PathVariable("id") Long id) {
+		Post post = this.postService.findById(id);
+		if (!post.getMember().getUsername().equals(memberContext.getUsername())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+		}
+		this.postService.delete(post);
 		return "redirect:/post/list";
 	}
 }
