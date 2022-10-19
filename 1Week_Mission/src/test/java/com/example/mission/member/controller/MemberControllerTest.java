@@ -14,16 +14,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.nio.charset.StandardCharsets;
-
-import com.example.mission.member.dto.MemberDto;
+import com.example.mission.member.dto.JoinDto;
 import com.example.mission.member.entity.Member;
 import com.example.mission.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,7 +54,7 @@ public class MemberControllerTest {
 	@DisplayName("POST /member/join 은 회원가입 처리 URL 이다.")
 	void memberJoin_PostApi_Test() throws Exception {
 		// Given
-		MemberDto memberDto = MemberDto.builder()
+		JoinDto memberDto = JoinDto.builder()
 			.username("user5")
 			.password("1234")
 			.email("user5@test.com")

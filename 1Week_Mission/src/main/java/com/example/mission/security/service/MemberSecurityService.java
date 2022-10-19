@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.example.mission.member.MemberRole;
 import com.example.mission.member.entity.Member;
 import com.example.mission.member.repository.MemberRepository;
+import com.example.mission.security.dto.MemberContext;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +38,6 @@ public class MemberSecurityService implements UserDetailsService {
 		} else {
 			authorities.add(new SimpleGrantedAuthority(MemberRole.MEMBER.getValue()));
 		}
-		return new User(member.getUsername(), member.getPassword(), authorities);
+		return new MemberContext(member, authorities);
 	}
 }
