@@ -5,8 +5,37 @@
       layout:decorate="~{layout}">
 
 <th:bloack layout:fragment="content"  class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-    <h1 th:text="${post.subject}"></h1>
-    <div th:text="${post.content}"></div>
+    <div>
+        <label class="block text-gray-700 text-sm font-bold mb-2">
+            글 번호
+        </label>
+        <div th:text="${post.id}"></div>
+    </div>
+    <div>
+        <label class="block text-gray-700 text-sm font-bold mb-2">
+            글 제목
+        </label>
+        <div th:text="${post.subject}"></div>
+    </div>
+    <div>
+        <label class="block text-gray-700 text-sm font-bold mb-2">
+            작성자
+        </label>
+        <div th:text="${post.member.username}"></div>
+    </div>
+    <div>
+        <label class="block text-gray-700 text-sm font-bold mb-2">
+            내용
+        </label>
+        <div th:text="${post.content}"></div>
+    </div>
+    <div>
+        <label class="block text-gray-700 text-sm font-bold mb-2">
+            작성날짜/수정날짜
+        </label>
+        <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd')}"></td>
+        <td th:text="${#temporals.format(post.modifyDate, 'yyyy-MM-dd')}"></td>
+    </div>
     <div class="my-3">
         <a th:href="@{|/post/${post.id}/modify|}" class="btn btn-sm btn-outline-secondary"
            sec:authorize="isAuthenticated()"
