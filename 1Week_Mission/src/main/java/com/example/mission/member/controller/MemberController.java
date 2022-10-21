@@ -25,6 +25,7 @@ public class MemberController {
 	private final MemberService memberService;
 	private final PasswordEncoder passwordEncoder;
 
+	// 회원가입 API
 	@PreAuthorize("isAnonymous()")
 	@GetMapping("/join")
 	public String memberJoin(JoinDto joinDto) {
@@ -41,12 +42,14 @@ public class MemberController {
 		return "redirect:/member/login";
 	}
 
+	// 로그인 API
 	@PreAuthorize("isAnonymous()")
 	@GetMapping("/login")
 	public String memberLogin() {
 		return "member/login_form";
 	}
 
+	// 회원정보 프로필 API
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/profile")
 	public String memberProfile() {
