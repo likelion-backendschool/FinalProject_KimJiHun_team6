@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -62,13 +63,11 @@ public class MemberControllerTest {
 			.build();
 
 		String content = objectMapper.writeValueAsString(memberDto);
-
 		// When
 		ResultActions resultActions = mvc.perform(
 				post("/member/join")
 					.content(content)
-					.contentType(MediaType.ALL)
-					.accept(MediaType.ALL)
+					.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print());
 

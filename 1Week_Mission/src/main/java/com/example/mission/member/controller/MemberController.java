@@ -32,7 +32,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/join")
-	public String memberJoinPost(@Valid JoinDto joinDto) {
+	public String memberJoinPost(@Valid @RequestBody JoinDto joinDto) {
 		if (!joinDto.confirmPassword()) {
 			return "member/join_form";
 		}
