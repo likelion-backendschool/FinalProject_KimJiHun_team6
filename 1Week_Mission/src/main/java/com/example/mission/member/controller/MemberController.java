@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.mission.base.rq.Rq;
 import com.example.mission.member.dto.JoinDto;
 import com.example.mission.member.service.MemberService;
 import com.example.mission.security.dto.MemberContext;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 
 	private final MemberService memberService;
+	private final Rq rq;
 
 	// 회원가입 API
 	@PreAuthorize("isAnonymous()")
@@ -38,7 +40,7 @@ public class MemberController {
 		}
 
 		memberService.join(joinDto.getUsername(), joinDto.getPassword(), joinDto.getEmail());
-		return "redirect:/member/login";
+		return Rq.redirectWithMsg("/member/login", "회원가입이 완료됐습니다.");
 	}
 
 	// 로그인 API
