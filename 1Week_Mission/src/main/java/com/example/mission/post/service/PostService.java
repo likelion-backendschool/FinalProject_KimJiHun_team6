@@ -18,7 +18,7 @@ public class PostService {
 	private final PostRepository postRepository;
 	private final MemberRepository memberRepository;
 	public void write(Long id, String subject, String content) {
-		Member member = memberRepository.findById(id).orElse(null);
+		Member member = memberRepository.findById(id).orElseThrow();
 		Post post = Post.builder()
 			.member(member)
 			.subject(subject)
