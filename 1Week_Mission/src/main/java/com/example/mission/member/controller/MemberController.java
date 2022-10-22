@@ -68,4 +68,9 @@ public class MemberController {
 		return "member/profile";
 	}
 
+	// 아이디, 비밀번호 찾기 폼
+	@GetMapping("/findUsername")
+	public String memberFindUsername() {
+		return "member/find_username";
+	}
 }

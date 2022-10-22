@@ -123,4 +123,17 @@ public class MemberControllerTest {
 			.andExpect(handler().methodName("memberProfile"))
 			.andExpect(content().string(containsString("user4@test.com")));
 	}
+
+	@Test
+	@DisplayName("아이디찾기 폼")
+	void member_GetApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/member/findUsername"))
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberFindUsername"));
+	}
 }
