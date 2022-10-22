@@ -1,7 +1,5 @@
 package com.example.mission.post.dto;
 
-import javax.validation.constraints.NotEmpty;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -28,13 +28,4 @@ public class Post extends BaseEntity {
 
 	@ManyToOne
 	private Member member;
-
-	public PostModifyDto transPostModifyDto() {
-		PostModifyDto postModifyDto = PostModifyDto.builder()
-			.id(super.getId())
-			.subject(subject)
-			.content(content)
-			.build();
-		return postModifyDto;
-	}
 }

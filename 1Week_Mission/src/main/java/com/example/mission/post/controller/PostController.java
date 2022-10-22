@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.mission.post.dto.PostModifyDto;
@@ -61,7 +60,7 @@ public class PostController {
 	@GetMapping("/{id}/modify")
 	public String postModify(Model model, @PathVariable("id") Long id) {
 		Post post = postService.findById(id);
-		PostModifyDto postModifyDto = post.transPostModifyDto();
+		PostModifyDto postModifyDto = postService.convert(post);
 		model.addAttribute("postModifyDto", postModifyDto);
 		return "post/modify";
 	}

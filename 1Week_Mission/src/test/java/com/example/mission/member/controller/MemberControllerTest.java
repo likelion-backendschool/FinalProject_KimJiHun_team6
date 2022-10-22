@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import javax.transaction.Transactional;
 
@@ -12,15 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.example.mission.member.dto.JoinDto;
 import com.example.mission.member.entity.Member;
 import com.example.mission.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +36,7 @@ public class MemberControllerTest {
 	private MemberService memberService;
 
 	@Test
-	@DisplayName("Get /member/join 은 회원가입 폼 가져오는 URL 이다.")
+	@DisplayName("회원가입폼")
 	void memberJoin_GetApi_Test() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(get("/member/join"))
@@ -51,30 +48,21 @@ public class MemberControllerTest {
 			.andExpect(handler().methodName("memberJoin"));
 	}
 	@Test
-	@DisplayName("POST /member/join 은 회원가입 처리 URL 이다.")
+	@DisplayName("회원가입 성공")
 	void memberJoin_PostApi_Test() throws Exception {
-		// Given
-		JoinDto memberDto = JoinDto.builder()
-			.username("user5")
-			.password("1234")
-			.passwordConfirm("1234")
-			.email("user5@test.com")
-			.build();
-
-		String content = objectMapper.writeValueAsString(memberDto);
-
 		// When
 		ResultActions resultActions = mvc.perform(
 				post("/member/join")
-					.content(content)
-					.contentType(MediaType.ALL)
-					.accept(MediaType.ALL)
+					.param("username", "user5")
+					.param("password", "1234")
+					.param("passwordConfirm","1234")
+					.param("email", "user5@test.com")
 			)
 			.andDo(print());
 
 		resultActions
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/member/login"))
+			.andExpect(redirectedUrlPattern("/member/login?msg=**"))
 			.andExpect(handler().handlerType(MemberController.class))
 			.andExpect(handler().methodName("memberJoinPost"));
 
@@ -85,7 +73,29 @@ public class MemberControllerTest {
 	}
 
 	@Test
-	@DisplayName("Get /member/login 은 로그인폼을 가져오는 URL 이다.")
+	@DisplayName("비밀번호 재입력이 틀렸을시 회원가입 실패")
+	void memberJoin_PostApi_PasswordIncorrect_Test() throws Exception {
+		// When
+		ResultActions resultActions = mvc.perform(
+				post("/member/join")
+					.param("username", "user5")
+					.param("password", "1234")
+					.param("passwordConfirm","12345")
+					.param("email", "user5@test.com")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrlPattern("/member/join?msg=**"))
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberJoinPost"));
+
+		assertThat(memberService.findByUsername("user5")).isNull();
+	}
+
+	@Test
+	@DisplayName("로그인폼")
 	void memberlogin_GetApi_Test() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(get("/member/login"))
@@ -98,7 +108,7 @@ public class MemberControllerTest {
 	}
 
 	@Test
-	@DisplayName("user4로 로그인 후 프로필페이지에 접속하면 user4의 이메일이 보여야 한다.")
+	@DisplayName("유저 이메일을 프로필 페이지에 표시")
 	@WithUserDetails("user4")
 	void memberlogin_PostApi_Test() throws Exception {
 		ResultActions resultActions = mvc
