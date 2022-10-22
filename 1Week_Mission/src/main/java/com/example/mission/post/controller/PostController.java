@@ -60,7 +60,7 @@ public class PostController {
 	@GetMapping("/{id}/modify")
 	public String postModify(Model model, @PathVariable("id") Long id) {
 		Post post = postService.findById(id);
-		PostModifyDto postModifyDto = post.transPostModifyDto();
+		PostModifyDto postModifyDto = postService.convert(post);
 		model.addAttribute("postModifyDto", postModifyDto);
 		return "post/modify";
 	}

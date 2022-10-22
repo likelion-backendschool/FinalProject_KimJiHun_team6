@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.mission.member.entity.Member;
 import com.example.mission.member.repository.MemberRepository;
+import com.example.mission.post.dto.PostModifyDto;
 import com.example.mission.post.entity.Post;
 import com.example.mission.post.repository.PostRepository;
 
@@ -44,5 +45,15 @@ public class PostService {
 
 	public void delete(Post post) {
 		postRepository.delete(post);
+	}
+
+	// Entity를 Dto로 변환해주는 메서드
+	public PostModifyDto convert(Post post) {
+		PostModifyDto postModifyDto = PostModifyDto.builder()
+			.id(post.getId())
+			.subject(post.getSubject())
+			.content(post.getContent())
+			.build();
+		return postModifyDto;
 	}
 }
