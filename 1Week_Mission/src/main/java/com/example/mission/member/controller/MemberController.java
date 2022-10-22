@@ -36,7 +36,7 @@ public class MemberController {
 	@PostMapping("/join")
 	public String memberJoinPost(@Valid @ModelAttribute JoinDto joinDto, BindingResult bindingResult) {
 		if (!joinDto.confirmPassword()) {
-			return "redirect:/member/join";
+			return Rq.redirectWithMsg("/member/join", "회원가입을 실패했습니다.");
 		}
 
 		memberService.join(joinDto.getUsername(), joinDto.getPassword(), joinDto.getEmail());

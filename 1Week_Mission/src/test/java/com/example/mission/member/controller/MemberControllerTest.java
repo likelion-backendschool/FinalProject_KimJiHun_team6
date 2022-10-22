@@ -65,7 +65,7 @@ public class MemberControllerTest {
 
 		resultActions
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/member/login"))
+			.andExpect(redirectedUrlPattern("/member/login?msg=**"))
 			.andExpect(handler().handlerType(MemberController.class))
 			.andExpect(handler().methodName("memberJoinPost"));
 
@@ -73,6 +73,28 @@ public class MemberControllerTest {
 
 		// Then
 		assertThat(member).isNotNull();
+	}
+
+	@Test
+	@DisplayName("비밀번호 재입력이 틀렸을시 회원가입 실패")
+	void memberJoin_PostApi_PasswordIncorrect_Test() throws Exception {
+		// When
+		ResultActions resultActions = mvc.perform(
+				post("/member/join")
+					.param("username", "user5")
+					.param("password", "1234")
+					.param("passwordConfirm","12345")
+					.param("email", "user5@test.com")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrlPattern("/member/join?msg=**"))
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberJoinPost"));
+
+		assertThat(memberService.findByUsername("user5")).isNull();
 	}
 
 	@Test
