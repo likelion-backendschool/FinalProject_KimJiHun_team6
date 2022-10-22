@@ -14,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -52,22 +51,15 @@ public class MemberControllerTest {
 			.andExpect(handler().methodName("memberJoin"));
 	}
 	@Test
-	@DisplayName("회원가입 처리")
+	@DisplayName("회원가입 성공")
 	void memberJoin_PostApi_Test() throws Exception {
-		// Given
-		JoinDto memberDto = JoinDto.builder()
-			.username("user5")
-			.password("1234")
-			.passwordConfirm("1234")
-			.email("user5@test.com")
-			.build();
-
-		String content = objectMapper.writeValueAsString(memberDto);
 		// When
 		ResultActions resultActions = mvc.perform(
 				post("/member/join")
-					.content(content)
-					.contentType(MediaType.APPLICATION_JSON)
+					.param("username", "user5")
+					.param("password", "1234")
+					.param("passwordConfirm","1234")
+					.param("email", "user5@test.com")
 			)
 			.andDo(print());
 

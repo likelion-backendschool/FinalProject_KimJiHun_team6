@@ -8,7 +8,6 @@ import com.example.mission.member.entity.Member;
 import com.example.mission.member.repository.MemberRepository;
 import com.example.mission.post.entity.Post;
 import com.example.mission.post.repository.PostRepository;
-import com.example.mission.security.dto.MemberContext;
 
 import lombok.RequiredArgsConstructor;
 

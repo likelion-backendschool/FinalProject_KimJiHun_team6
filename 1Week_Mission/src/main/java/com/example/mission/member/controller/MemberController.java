@@ -4,11 +4,11 @@ import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.mission.member.dto.JoinDto;
@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 
 	private final MemberService memberService;
-	private final PasswordEncoder passwordEncoder;
 
 	// 회원가입 API
 	@PreAuthorize("isAnonymous()")
@@ -33,12 +32,12 @@ public class MemberController {
 	}
 
 	@PostMapping("/join")
-	public String memberJoinPost(@Valid @RequestBody JoinDto joinDto) {
+	public String memberJoinPost(@Valid @ModelAttribute JoinDto joinDto, BindingResult bindingResult) {
 		if (!joinDto.confirmPassword()) {
-			return "member/join_form";
+			return "redirect:/member/join";
 		}
-		memberService.join(joinDto.getUsername(),
-			passwordEncoder.encode(joinDto.getPassword()), joinDto.getEmail());
+
+		memberService.join(joinDto.getUsername(), joinDto.getPassword(), joinDto.getEmail());
 		return "redirect:/member/login";
 	}
 

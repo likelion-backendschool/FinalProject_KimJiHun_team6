@@ -1,5 +1,6 @@
 package com.example.mission.member.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.mission.member.entity.Member;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberService {
 
 	private final MemberRepository memberRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	public Member getMemberById(long id) {
 		return memberRepository.findById(id).orElse(null);
@@ -20,7 +22,7 @@ public class MemberService {
 	public void join(String username, String password, String email) {
 		Member member = Member.builder()
 			.username(username)
-			.password(password)
+			.password(passwordEncoder.encode(password))
 			.email(email)
 			.build();
 		memberRepository.save(member);
