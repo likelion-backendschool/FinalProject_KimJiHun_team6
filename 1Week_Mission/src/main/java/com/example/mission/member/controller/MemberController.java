@@ -60,12 +60,13 @@ public class MemberController {
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify")
-	public String memberModifyForm() {
+	public String memberModify() {
 		return "member/modify";
 	}
 
 	@PostMapping("/modify")
-	public String memberModify(@AuthenticationPrincipal MemberContext memberContext) {
+	public String memberModifyPost() {
+
 		return "member/profile";
 	}
 

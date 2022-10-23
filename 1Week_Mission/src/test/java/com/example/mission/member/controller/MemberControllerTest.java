@@ -149,8 +149,22 @@ public class MemberControllerTest {
 
 		resultActions
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrlPattern("/member/login?msg=**"))
+			.andExpect(redirectedUrlPattern("/member/login?**"))
 			.andExpect(handler().handlerType(MemberController.class))
-			.andExpect(handler().methodName("memberLogin"));
+			.andExpect(handler().methodName("memberFindUsernamePost"));
+	}
+
+	@Test
+	@DisplayName("회원정보 수정폼")
+	@WithUserDetails("user2")
+	void memberModify_GetApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/member/modify"))
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberModify"));
 	}
 }
