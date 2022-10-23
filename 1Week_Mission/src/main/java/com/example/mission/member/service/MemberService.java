@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.mission.member.entity.Member;
-import com.example.mission.member.exception.AlreadyJoinException;
+import com.example.mission.member.exception.AlreadyExistException;
 import com.example.mission.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class MemberService {
 	@Transactional
 	public void join(String username, String password, String email) {
 		if (memberRepository.existsByUsername(username)) {
-			throw  new AlreadyJoinException();
+			throw  new AlreadyExistException();
 		}
 
 		Member member = Member.builder()
@@ -46,5 +46,18 @@ public class MemberService {
 
 	public Optional<Member> findByEmail(String email) {
 		return memberRepository.findByEmail(email);
+	}
+
+	public void modify(String email, String nickname) {
+		if (memberRepository.existsByEmail(email)) {
+			throw new AlreadyExistException();
+		}
+		// ToDo: 필명도 중복확인
+
+		Member member = Member.builder()
+			.email(email)
+			.nickname(nickname)
+			.build();
+		memberRepository.save(member);
 	}
 }

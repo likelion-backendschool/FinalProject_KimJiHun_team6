@@ -167,4 +167,25 @@ public class MemberControllerTest {
 			.andExpect(handler().handlerType(MemberController.class))
 			.andExpect(handler().methodName("memberModify"));
 	}
+
+	@Test
+	@DisplayName("회원정보 수정 성공")
+	@WithUserDetails("user2")
+	void memberModify_PostApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				post("/member/modify")
+					.param("email", "user22@test.com")
+					.param("nickname", "kjh")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrlPattern("/member/profile?msg=**"))
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberModifyPost"));
+
+		assertThat(memberService.findByEmail("user22@test.com").isPresent()).isTrue();
+	}
 }

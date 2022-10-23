@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.mission.base.rq.Rq;
 import com.example.mission.member.dto.JoinDto;
+import com.example.mission.member.dto.ModifyDto;
 import com.example.mission.member.entity.Member;
 import com.example.mission.member.service.MemberService;
 import com.example.mission.security.dto.MemberContext;
@@ -35,7 +36,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/join")
-	public String memberJoinPost(@Valid @ModelAttribute JoinDto joinDto, BindingResult bindingResult) {
+	public String memberJoinPost(@Valid @ModelAttribute JoinDto joinDto) {
 		if (!joinDto.confirmPassword()) {
 			return Rq.redirectWithMsg("/member/join", "회원가입을 실패했습니다.");
 		}
@@ -60,14 +61,15 @@ public class MemberController {
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify")
-	public String memberModify() {
+	public String memberModify(ModifyDto modifyDto) {
 		return "member/modify";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify")
-	public String memberModifyPost() {
-
-		return "member/profile";
+	public String memberModifyPost(@Valid ModifyDto modifyDto) {
+		memberService.modify(modifyDto.getEmail(), modifyDto.getNickname());
+		return Rq.redirectWithMsg("/member/profile", "회원정보 수정이 완료됐습니다.");
 	}
 
 	// 아이디, 비밀번호 찾기 폼
