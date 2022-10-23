@@ -1,5 +1,7 @@
 package com.example.mission.member.service;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,5 +42,9 @@ public class MemberService {
 		memberRepository.save(member);
 
 		// ToDo: 회원가입 축하 메일 보내기
+	}
+
+	public Optional<Member> findByEmail(String email) {
+		return memberRepository.findByEmail(email);
 	}
 }

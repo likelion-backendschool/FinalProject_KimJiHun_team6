@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.mission.base.rq.Rq;
 import com.example.mission.member.dto.JoinDto;
+import com.example.mission.member.entity.Member;
 import com.example.mission.member.service.MemberService;
 import com.example.mission.security.dto.MemberContext;
 
@@ -69,8 +70,19 @@ public class MemberController {
 	}
 
 	// 아이디, 비밀번호 찾기 폼
+	@PreAuthorize("isAnonymous()")
 	@GetMapping("/findUsername")
 	public String memberFindUsername() {
 		return "member/find_username";
+	}
+
+	@PreAuthorize("isAnonymous()")
+	@PostMapping("/findUsername")
+	public String memberFindUsernamePost(String email) {
+		Member member = memberService.findByEmail(email).orElse(null);
+		if (member == null) {
+			return rq.historyBack("해당 이메일은 존재하지 않습니다.");
+		}
+		return Rq.redirectWithMsg("/member/login?username=%s".formatted(member.getUsername()), "해당 이메일로 가입한 계정의 아이디는 '%s' 입니다.".formatted(member.getUsername()));
 	}
 }

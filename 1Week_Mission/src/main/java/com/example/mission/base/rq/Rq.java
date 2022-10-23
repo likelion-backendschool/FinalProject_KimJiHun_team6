@@ -55,4 +55,9 @@ public class Rq {
 	private static String msgWithTtl(String msg) {
 		return Ut.url.encode(msg) + ";ttl=" + new Date().getTime();
 	}
+
+	public String historyBack(String msg) {
+		req.setAttribute("alertMsg", msg);
+		return "common/js";
+	}
 }

@@ -80,7 +80,7 @@ public class MemberControllerTest {
 				post("/member/join")
 					.param("username", "user5")
 					.param("password", "1234")
-					.param("passwordConfirm","12345")
+					.param("passwordConfirm", "12345")
 					.param("email", "user5@test.com")
 			)
 			.andDo(print());
@@ -126,7 +126,7 @@ public class MemberControllerTest {
 
 	@Test
 	@DisplayName("아이디찾기 폼")
-	void member_GetApi_Test() throws Exception {
+	void memberFindUsername_GetApi_Test() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(get("/member/findUsername"))
 			.andDo(print());
@@ -135,5 +135,22 @@ public class MemberControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().handlerType(MemberController.class))
 			.andExpect(handler().methodName("memberFindUsername"));
+	}
+
+	@Test
+	@DisplayName("아이디찾기 성공")
+	void memberFindUsername_PostApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				post("/member/findUsername")
+				.param("email", "user1@test.com")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrlPattern("/member/login?msg=**"))
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberLogin"));
 	}
 }
