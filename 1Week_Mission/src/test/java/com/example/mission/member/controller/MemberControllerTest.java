@@ -236,4 +236,22 @@ public class MemberControllerTest {
 			.andExpect(handler().handlerType(MemberController.class))
 			.andExpect(handler().methodName("memberFindPassword"));
 	}
+
+	@Test
+	@DisplayName("아이디찾기 성공")
+	void memberFindPassword_PostApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				post("/member/findPassword")
+					.param("username", "user1")
+					.param("email", "user1@test.com")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrlPattern("/member/login?**"))
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberFindPasswordPost"));
+	}
 }

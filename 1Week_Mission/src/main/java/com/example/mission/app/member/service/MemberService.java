@@ -49,6 +49,10 @@ public class MemberService {
 		return memberRepository.findByEmail(email);
 	}
 
+	public Optional<Member> findByUsernameAndEmail(String username, String email) {
+		return memberRepository.findByUsernameAndEmail(username, email);
+	}
+
 	public void modify(String email, String nickname) {
 		if (memberRepository.existsByEmail(email)) {
 			throw new AlreadyExistException();
