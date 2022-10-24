@@ -223,4 +223,17 @@ public class MemberControllerTest {
 			.andExpect(handler().handlerType(MemberController.class))
 			.andExpect(handler().methodName("passwordModifyPost"));
 	}
+
+	@Test
+	@DisplayName("비밀번호찾기 폼")
+	void memberFindPassword_GetApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/member/findPassword"))
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberFindPassword"));
+	}
 }
