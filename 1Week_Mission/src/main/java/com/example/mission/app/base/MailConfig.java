@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
-@PropertySource("classpath:google-smtp.yml")
+@PropertySource("classpath:google-smtp.properties")
 public class MailConfig {
 
 	@Value("${spring.mail.username}")

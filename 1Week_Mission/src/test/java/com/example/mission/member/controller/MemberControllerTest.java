@@ -189,4 +189,18 @@ public class MemberControllerTest {
 
 		assertThat(memberService.findByEmail("user22@test.com").isPresent()).isTrue();
 	}
+
+	@Test
+	@DisplayName("비밀번호 수정폼")
+	@WithUserDetails("user3")
+	void passwordModify_GetApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/member/modifyPassword"))
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("passwordModify"));
+	}
 }

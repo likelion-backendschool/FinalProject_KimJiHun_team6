@@ -69,6 +69,12 @@ public class MemberController {
 		return Rq.redirectWithMsg("/member/profile", "회원정보 수정이 완료됐습니다.");
 	}
 
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/modifyPassword")
+	public String passwordModify() {
+		return "member/modify_password";
+	}
+
 	// 아이디, 비밀번호 찾기 폼
 	@PreAuthorize("isAnonymous()")
 	@GetMapping("/findUsername")
