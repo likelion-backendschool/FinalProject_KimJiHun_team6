@@ -203,4 +203,24 @@ public class MemberControllerTest {
 			.andExpect(handler().handlerType(MemberController.class))
 			.andExpect(handler().methodName("passwordModify"));
 	}
+
+	@Test
+	@DisplayName("비밀번호 수정 성공")
+	@WithUserDetails("user2")
+	void passwordModify_PostApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				post("/member/modifyPassword")
+					.param("oldPassword", "1234")
+					.param("password", "12345")
+					.param("passwordConfirm", "12345")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrlPattern("/?msg=**"))
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("passwordModifyPost"));
+	}
 }
