@@ -2,6 +2,7 @@ package com.example.mission.app.post.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 import com.example.mission.app.base.entity.BaseEntity;
@@ -28,6 +29,6 @@ public class Post extends BaseEntity {
 	@Column(columnDefinition = "LONGTEXT")
 	private String contentHtml;
 
-	@ManyToOne
-	private Member member;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Member author;
 }

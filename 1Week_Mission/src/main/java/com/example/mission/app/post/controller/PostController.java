@@ -75,7 +75,7 @@ public class PostController {
 	@GetMapping("/{id}/delete")
 	public String postDelete(@AuthenticationPrincipal MemberContext memberContext, @PathVariable("id") Long id) {
 		Post post = this.postService.findById(id);
-		if (!post.getMember().getUsername().equals(memberContext.getUsername())) {
+		if (!post.getAuthor().getUsername().equals(memberContext.getUsername())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
 		}
 		this.postService.delete(post);

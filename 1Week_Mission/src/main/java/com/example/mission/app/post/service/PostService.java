@@ -21,7 +21,7 @@ public class PostService {
 	public void write(Long id, String subject, String content) {
 		Member member = memberRepository.findById(id).orElseThrow();
 		Post post = Post.builder()
-			.member(member)
+			.author(member)
 			.subject(subject)
 			.content(content)
 			.build();
