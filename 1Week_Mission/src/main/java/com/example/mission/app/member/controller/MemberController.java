@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.mission.app.base.rq.Rq;
 import com.example.mission.app.member.dto.ModifyDto;
+import com.example.mission.app.member.dto.PasswordModifyDto;
 import com.example.mission.app.member.service.MemberService;
 import com.example.mission.app.member.dto.JoinDto;
 import com.example.mission.app.member.entity.Member;
@@ -71,7 +72,8 @@ public class MemberController {
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modifyPassword")
-	public String passwordModify() {
+	public String passwordModify(@Valid PasswordModifyDto passwordModifyDto) {
+
 		return "member/modify_password";
 	}
 

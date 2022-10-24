@@ -206,7 +206,7 @@ public class MemberControllerTest {
 
 	@Test
 	@DisplayName("비밀번호 수정 성공")
-	@WithUserDetails("user2")
+	@WithUserDetails("user3")
 	void passwordModify_PostApi_Test() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(
