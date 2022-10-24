@@ -18,8 +18,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.example.mission.member.entity.Member;
-import com.example.mission.member.service.MemberService;
+import com.example.mission.app.member.controller.MemberController;
+import com.example.mission.app.member.entity.Member;
+import com.example.mission.app.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
