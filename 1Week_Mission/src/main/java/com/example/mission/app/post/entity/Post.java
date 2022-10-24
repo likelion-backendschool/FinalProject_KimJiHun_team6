@@ -31,4 +31,8 @@ public class Post extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Member author;
+
+	public String getForPrintContentHtml() {
+		return contentHtml.replaceAll("toastui-editor-ww-code-block-highlighting", "");
+	}
 }

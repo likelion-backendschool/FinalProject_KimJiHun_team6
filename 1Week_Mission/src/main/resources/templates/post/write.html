@@ -15,9 +15,12 @@ function ArticleSave__submitForm(form) {
      }
      const editor = $(form).find(".toast-ui-editor").data("data-toast-editor");
      const markdown = editor.getMarkdown();
-     console.log(markdown);
+     const html = editor.getHTML().trim();
+
      form.content.value = markdown.trim();
-     if (form.content.value.length == 0) {
+     form.contentHtml.value = html;
+
+     if (form.content.value.length == 0 || form.contentHtml.value.length == 0) {
          alert("내용을 입력해주세요");
          editor.focus();
          return;

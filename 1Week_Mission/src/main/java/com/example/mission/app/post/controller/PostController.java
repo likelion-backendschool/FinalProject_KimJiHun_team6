@@ -45,7 +45,7 @@ public class PostController {
 
 	@PostMapping("/write")
 	public String postWritePost(@AuthenticationPrincipal MemberContext memberContext, @Valid WriteDto writeDto) {
-		postService.write(memberContext.getId(), writeDto.getSubject(), writeDto.getContent());
+		postService.write(memberContext.getId(), writeDto.getSubject(), writeDto.getContent(), writeDto.getContentHtml());
 		return "redirect:/post/list";
 	}
 
@@ -67,7 +67,7 @@ public class PostController {
 
 	@PostMapping("/{id}/modify")
 	public String postModifyPost(@Valid PostModifyDto postModifyDto, @PathVariable("id") Long id) {
-		postService.modify(id, postModifyDto.getSubject(), postModifyDto.getContent());
+		postService.modify(id, postModifyDto.getSubject(), postModifyDto.getContent(), postModifyDto.getContentHtml());
 		return "redirect:/post/list";
 	}
 

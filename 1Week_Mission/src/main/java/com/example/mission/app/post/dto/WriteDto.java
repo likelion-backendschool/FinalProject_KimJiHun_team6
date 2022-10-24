@@ -1,5 +1,6 @@
 package com.example.mission.app.post.dto;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
@@ -14,8 +15,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WriteDto {
-	@NotEmpty
+	@NotBlank
 	private String subject;
-	@NotEmpty
+	@NotBlank
 	private String content;
+	@NotBlank
+	private String contentHtml;
 }

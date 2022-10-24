@@ -20,10 +20,10 @@ public class DevInitData {
 
 			for (int i = 1; i <= 100; i++) {
 				if (i % 2 == 0) {
-					postService.write(1L, "제목%d".formatted(i), "내용%d".formatted(i));
+					postService.write(1L, "제목%d".formatted(i), "# 내용 %d".formatted(i), "<h1>내용 %d</h1>".formatted(i));
 				}
 				if (i % 2 == 1) {
-					postService.write(2L, "제목%d".formatted(i), "내용%d".formatted(i));
+					postService.write(2L, "제목%d".formatted(i), "# 내용 %d".formatted(i), "<h1>내용 %d</h1>".formatted(i));
 				}
 			}
 		};

@@ -15,9 +15,12 @@ function ArticleSave__submitForm(form) {
      }
      const editor = $(form).find(".toast-ui-editor").data("data-toast-editor");
      const markdown = editor.getMarkdown();
-     console.log(markdown);
+     const html = editor.getHTML().trim();
+
      form.content.value = markdown.trim();
-     if (form.content.value.length == 0) {
+     form.contentHtml.value = html;
+
+     if (form.content.value.length == 0 || form.contentHtml.value.length == 0) {
          alert("내용을 입력해주세요");
          editor.focus();
          return;
@@ -30,6 +33,7 @@ function ArticleSave__submitForm(form) {
             <h1 class="font-bold text-lg"><i class="fa-solid fa-pen"></i> 작성</h1>
             <form method="POST" th:object="${postModifyDto}" onsubmit="ArticleSave__submitForm(this); return false;">
                 <input type="hidden" name="content" />
+                <input type="hidden" name="contentHtml">
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">제목</span>

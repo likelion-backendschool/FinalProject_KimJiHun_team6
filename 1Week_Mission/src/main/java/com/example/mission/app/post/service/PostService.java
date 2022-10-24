@@ -18,12 +18,13 @@ public class PostService {
 
 	private final PostRepository postRepository;
 	private final MemberRepository memberRepository;
-	public void write(Long id, String subject, String content) {
+	public void write(Long id, String subject, String content, String contentHtml) {
 		Member member = memberRepository.findById(id).orElseThrow();
 		Post post = Post.builder()
 			.author(member)
 			.subject(subject)
 			.content(content)
+			.contentHtml(contentHtml)
 			.build();
 		postRepository.save(post);
 	}
@@ -36,10 +37,11 @@ public class PostService {
 		return postRepository.findById(id).orElse(null);
 	}
 
-	public void modify(Long id, String subject, String content) {
+	public void modify(Long id, String subject, String content, String contentHtml) {
 		Post post = postRepository.findById(id).orElse(null);
 		post.setSubject(subject);
 		post.setContent(content);
+		post.setContentHtml(contentHtml);
 		postRepository.save(post);
 	}
 
@@ -53,6 +55,7 @@ public class PostService {
 			.id(post.getId())
 			.subject(post.getSubject())
 			.content(post.getContent())
+			.contentHtml(post.getContentHtml())
 			.build();
 		return postModifyDto;
 	}
