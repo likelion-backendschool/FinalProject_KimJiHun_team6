@@ -238,7 +238,7 @@ public class MemberControllerTest {
 	}
 
 	@Test
-	@DisplayName("아이디찾기 성공")
+	@DisplayName("비밀번호찾기 성공")
 	void memberFindPassword_PostApi_Test() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(

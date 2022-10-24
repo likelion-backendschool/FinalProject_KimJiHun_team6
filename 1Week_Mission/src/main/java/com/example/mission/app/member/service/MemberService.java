@@ -1,13 +1,17 @@
 package com.example.mission.app.member.service;
 
 import java.util.Optional;
+import java.util.Random;
 
 import javax.transaction.Transactional;
 
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.mission.app.base.dto.RsData;
+import com.example.mission.app.email.vo.EmailVo;
 import com.example.mission.app.member.exception.AlreadyExistException;
 import com.example.mission.app.member.entity.Member;
 import com.example.mission.app.member.repository.MemberRepository;
@@ -20,6 +24,7 @@ public class MemberService {
 
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final JavaMailSender mailSender;
 
 	public Member getMemberById(long id) {
 		return memberRepository.findById(id).orElse(null);
@@ -43,6 +48,7 @@ public class MemberService {
 		memberRepository.save(member);
 
 		// ToDo: 회원가입 축하 메일 보내기
+		sendMail(email, "회원가입 축하메일" , "멋사북에 가입한걸 환영합니다!🥳");
 	}
 
 	public Optional<Member> findByEmail(String email) {
@@ -77,5 +83,20 @@ public class MemberService {
 			.build();
 
 		return RsData.of("S-1", "비밀번호가 변경되었습니다.");
+	}
+
+	public void sendMail(String email, String subject, String body) {
+		EmailVo vo = EmailVo.builder()
+			.address("gi020477@gmail.com")
+			.subject(subject)
+			.body(body)
+			.build();
+
+		SimpleMailMessage smm = new SimpleMailMessage();
+		smm.setFrom(vo.getAddress());
+		smm.setTo(email);
+		smm.setSubject(vo.getSubject());
+		smm.setText(vo.getBody());
+		mailSender.send(smm);
 	}
 }

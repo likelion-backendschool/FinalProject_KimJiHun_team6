@@ -1,5 +1,7 @@
 package com.example.mission.app.member.controller;
 
+import java.util.Random;
+
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -111,12 +113,14 @@ public class MemberController {
 	}
 
 	@PreAuthorize("isAnonymous()")
-	@PostMapping("/findUsername")
+	@PostMapping("/findPassword")
 	public String memberFindPasswordPost(String username, String email) {
 		Member member = memberService.findByUsernameAndEmail(username, email).orElse(null);
 		if (member == null) {
-			return rq.historyBack("해당 이메일은 존재하지 않습니다.");
+			return rq.historyBack("해당 사용자 아이디와 이메일이 존재하지 않습니다.");
 		}
-		return Rq.redirectWithMsg("/member/login?username=%s".formatted(member.getUsername()), "해당 이메일로 가입한 계정의 아이디는 '%s' 입니다.".formatted(member.getUsername()));
+		int tempNum = new Random().nextInt(999999);
+		memberService.sendMail(email, "임시비밀번호 발송", "임시번호: %d".formatted(tempNum));
+		return Rq.redirectWithMsg("/member/login", "임시비밀번호 발급했습니다.");
 	}
 }
