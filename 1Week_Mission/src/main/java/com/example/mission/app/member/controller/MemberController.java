@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.mission.app.base.dto.RsData;
 import com.example.mission.app.base.rq.Rq;
+import com.example.mission.app.member.dto.JoinDto;
 import com.example.mission.app.member.dto.ModifyDto;
 import com.example.mission.app.member.dto.PasswordModifyDto;
-import com.example.mission.app.member.service.MemberService;
-import com.example.mission.app.member.dto.JoinDto;
 import com.example.mission.app.member.entity.Member;
+import com.example.mission.app.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 

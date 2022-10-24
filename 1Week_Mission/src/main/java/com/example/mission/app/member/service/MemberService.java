@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.mission.app.base.dto.RsData;
 import com.example.mission.app.email.vo.EmailVo;
-import com.example.mission.app.member.exception.AlreadyExistException;
 import com.example.mission.app.member.entity.Member;
+import com.example.mission.app.member.exception.AlreadyExistException;
 import com.example.mission.app.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,6 @@ public class MemberService {
 			.build();
 		memberRepository.save(member);
 
-		// ToDo: 회원가입 축하 메일 보내기
 		sendMail(email, "회원가입 축하메일" , "멋사북에 가입한걸 환영합니다!🥳");
 	}
 
