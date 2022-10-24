@@ -18,8 +18,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.example.mission.member.entity.Member;
-import com.example.mission.member.service.MemberService;
+import com.example.mission.app.member.controller.MemberController;
+import com.example.mission.app.member.entity.Member;
+import com.example.mission.app.member.service.MemberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
@@ -80,7 +81,7 @@ public class MemberControllerTest {
 				post("/member/join")
 					.param("username", "user5")
 					.param("password", "1234")
-					.param("passwordConfirm","12345")
+					.param("passwordConfirm", "12345")
 					.param("email", "user5@test.com")
 			)
 			.andDo(print());
@@ -126,7 +127,7 @@ public class MemberControllerTest {
 
 	@Test
 	@DisplayName("아이디찾기 폼")
-	void member_GetApi_Test() throws Exception {
+	void memberFindUsername_GetApi_Test() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(get("/member/findUsername"))
 			.andDo(print());
@@ -135,5 +136,122 @@ public class MemberControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().handlerType(MemberController.class))
 			.andExpect(handler().methodName("memberFindUsername"));
+	}
+
+	@Test
+	@DisplayName("아이디찾기 성공")
+	void memberFindUsername_PostApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				post("/member/findUsername")
+				.param("email", "user1@test.com")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrlPattern("/member/login?**"))
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberFindUsernamePost"));
+	}
+
+	@Test
+	@DisplayName("회원정보 수정폼")
+	@WithUserDetails("user2")
+	void memberModify_GetApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/member/modify"))
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberModify"));
+	}
+
+	@Test
+	@DisplayName("회원정보 수정 성공")
+	@WithUserDetails("user2")
+	void memberModify_PostApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				post("/member/modify")
+					.param("email", "user22@test.com")
+					.param("nickname", "kjh")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrlPattern("/member/profile?msg=**"))
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberModifyPost"));
+
+		assertThat(memberService.findByEmail("user22@test.com").isPresent()).isTrue();
+	}
+
+	@Test
+	@DisplayName("비밀번호 수정폼")
+	@WithUserDetails("user3")
+	void passwordModify_GetApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/member/modifyPassword"))
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("passwordModify"));
+	}
+
+	@Test
+	@DisplayName("비밀번호 수정 성공")
+	@WithUserDetails("user3")
+	void passwordModify_PostApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				post("/member/modifyPassword")
+					.param("oldPassword", "1234")
+					.param("password", "12345")
+					.param("passwordConfirm", "12345")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrlPattern("/?msg=**"))
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("passwordModifyPost"));
+	}
+
+	@Test
+	@DisplayName("비밀번호찾기 폼")
+	void memberFindPassword_GetApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/member/findPassword"))
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberFindPassword"));
+	}
+
+	@Test
+	@DisplayName("비밀번호찾기 성공")
+	void memberFindPassword_PostApi_Test() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				post("/member/findPassword")
+					.param("username", "user1")
+					.param("email", "user1@test.com")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrlPattern("/member/login?**"))
+			.andExpect(handler().handlerType(MemberController.class))
+			.andExpect(handler().methodName("memberFindPasswordPost"));
 	}
 }

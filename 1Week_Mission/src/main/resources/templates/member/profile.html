@@ -12,8 +12,10 @@
         <div>이메일 : <span th:text="${#authentication.principal.email}"></span></div>
         <div>닉네임 : <span th:if="${#authentication.principal.nickname} != null" th:text="${#authentication.principal.nickname}"></span></div>
         <div class="my-3">
-            <a th:href="@{|/member/modify|}" class="btn btn-sm btn-outline-secondary"
-               th:text="수정"></a>
+            <a th:href="@{|/member/modify|}" class="btn btn-sm btn-outline-secondary" th:text="수정"></a>
+        </div>
+        <div class="my-3">
+            <a th:href="@{|/member/modifyPassword|}" class="btn btn-sm btn-outline-secondary" th:text="|비밀번호 수정|"></a>
         </div>
     </div>
 </section>
