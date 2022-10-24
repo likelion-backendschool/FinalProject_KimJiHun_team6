@@ -121,6 +121,7 @@ public class MemberController {
 		}
 		int tempNum = new Random().nextInt(999999);
 		memberService.sendMail(email, "임시비밀번호 발송", "임시번호: %d".formatted(tempNum));
+		memberService.saveTempPassword(username, tempNum);
 		return Rq.redirectWithMsg("/member/login", "임시비밀번호 발급했습니다.");
 	}
 }

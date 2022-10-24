@@ -1,7 +1,6 @@
 package com.example.mission.app.member.service;
 
 import java.util.Optional;
-import java.util.Random;
 
 import javax.transaction.Transactional;
 
@@ -98,5 +97,11 @@ public class MemberService {
 		smm.setSubject(vo.getSubject());
 		smm.setText(vo.getBody());
 		mailSender.send(smm);
+	}
+
+	public void saveTempPassword(String username, int tempNum) {
+		Member member = memberRepository.findByUsername(username).get();
+		member.setPassword(passwordEncoder.encode(Integer.toString(tempNum)));
+		memberRepository.save(member);
 	}
 }
