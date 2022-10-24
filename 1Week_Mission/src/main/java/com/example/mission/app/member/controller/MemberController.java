@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.mission.app.base.dto.RsData;
 import com.example.mission.app.base.rq.Rq;
 import com.example.mission.app.member.dto.ModifyDto;
 import com.example.mission.app.member.dto.PasswordModifyDto;
@@ -69,12 +70,21 @@ public class MemberController {
 		memberService.modify(modifyDto.getEmail(), modifyDto.getNickname());
 		return Rq.redirectWithMsg("/member/profile", "회원정보 수정이 완료됐습니다.");
 	}
-
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modifyPassword")
-	public String passwordModify(@Valid PasswordModifyDto passwordModifyDto) {
-
+	public String passwordModify() {
 		return "member/modify_password";
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/modifyPassword")
+	public String passwordModifyPost(@Valid PasswordModifyDto pwModifyDto) {
+		Member member = rq.getMember();
+		RsData rsData = memberService.modifyPassword(member, pwModifyDto.getPassword(), pwModifyDto.getOldPassword());
+		if (!pwModifyDto.confirmPassword()) {
+			return rq.historyBack(rsData.getMsg());
+		}
+		return Rq.redirectWithMsg("/", rsData.getMsg());
 	}
 
 	// 아이디, 비밀번호 찾기 폼

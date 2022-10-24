@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.mission.app.base.dto.RsData;
 import com.example.mission.app.member.exception.AlreadyExistException;
 import com.example.mission.app.member.entity.Member;
 import com.example.mission.app.member.repository.MemberRepository;
@@ -59,5 +60,18 @@ public class MemberService {
 			.nickname(nickname)
 			.build();
 		memberRepository.save(member);
+	}
+
+	@Transactional
+	public RsData modifyPassword(Member member, String password, String oldPassword) {
+		Member oldMember = memberRepository.findById(member.getId()).get();
+		if (!passwordEncoder.matches(oldPassword, oldMember.getPassword())) {
+			return RsData.of("F-1", "기존 비밀번호가 일치하지 않습니다.");
+		}
+		oldMember = Member.builder()
+			.password(password)
+			.build();
+
+		return RsData.of("S-1", "비밀번호가 변경되었습니다.");
 	}
 }
