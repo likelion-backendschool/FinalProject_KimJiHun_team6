@@ -37,10 +37,12 @@
                 </div>
             </div>
             <div class="card-actions justify-end">
-                <a th:href class="btn btn-sm">
-                    <i class="fa-solid fa-cart-plus"></i>
-                    <span class="ml-2">장바구니</span>
-                </a>
+                <form id="addItem" name="addItem" method="POST" th:action="@{|/cart/add/${product.id}|}">
+                    <a th:if="${@rq.isLogined()}" type="submit" onclick="document.getElementById('addItem').submit();" class="btn btn-sm">
+                        <i class="fa-solid fa-cart-plus"></i>
+                        <span class="ml-2">장바구니</span>
+                    </a>
+                </form>
 
                 <a th:href="@{|/product/${product.id}|}" class="btn btn-sm">
                     <i class="fa-solid fa-eye"></i>

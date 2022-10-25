@@ -35,6 +35,12 @@ public class CartController {
 		return "cart/items";
 	}
 
+	@PostMapping("/add/{id}")
+	@PreAuthorize("isAuthenticated()")
+	public String addItem(){
+		return Rq.redirectWithMsg("/product/list","상품이 추가됐습니다.");
+	}
+
 	@PostMapping("/removeItems")
 	@PreAuthorize("isAuthenticated()")
 	public String removeItems(String ids) {
