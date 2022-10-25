@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ll.exam.final__2022_10_08.app.base.rq.Rq;
 import com.ll.exam.final__2022_10_08.app.member.entity.Member;
+import com.ll.exam.final__2022_10_08.app.member.service.MemberService;
 import com.ll.exam.final__2022_10_08.app.order.entity.Order;
 import com.ll.exam.final__2022_10_08.app.order.exception.BuyerCanNotSeeOrderException;
 import com.ll.exam.final__2022_10_08.app.order.exception.OrderIdNotMatchedException;
@@ -39,6 +40,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/order")
 public class OrderController {
 	private final OrderService orderService;
+	private final MemberService memberService;
 	private final RestTemplate restTemplate = new RestTemplate();
 	private final ObjectMapper objectMapper;
 	private final Rq rq;
@@ -50,11 +52,14 @@ public class OrderController {
 
 		Member buyer = rq.getMember();
 
+		long restCash = memberService.getRestCash(buyer);
+
 		if (orderService.buyerCanSee(buyer, order) == false) {
 			throw new BuyerCanNotSeeOrderException();
 		}
 
 		model.addAttribute("order", order);
+		model.addAttribute("actorRestCash", restCash);
 
 		return "order/detail";
 	}
