@@ -1,5 +1,6 @@
 package com.ll.exam.final__2022_10_08.app.cart.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,6 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 	Optional<CartItem> findByBuyerIdAndProductId(long buyerId, long productId);
 
 	boolean existsByBuyerIdAndProductId(long buyerId, long productId);
+
+	List<CartItem> findAllByBuyerId(Long id);
 }

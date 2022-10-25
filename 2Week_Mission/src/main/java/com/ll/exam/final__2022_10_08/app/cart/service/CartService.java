@@ -1,5 +1,7 @@
 package com.ll.exam.final__2022_10_08.app.cart.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,5 +49,21 @@ public class CartService {
 
 	public boolean hasItem(Member buyer, Product product) {
 		return cartItemRepository.existsByBuyerIdAndProductId(buyer.getId(), product.getId());
+	}
+
+	public List<CartItem> getItemsByBuyer(Member buyer) {
+		return cartItemRepository.findAllByBuyerId(buyer.getId());
+	}
+
+	public void removeItem(CartItem cartItem) {
+		cartItemRepository.delete(cartItem);
+	}
+
+	public void removeItem(
+		Member buyer,
+		Long productId
+	) {
+		Product product = new Product(productId);
+		removeItem(buyer, product);
 	}
 }
