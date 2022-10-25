@@ -30,6 +30,7 @@ import com.ll.exam.final__2022_10_08.app.order.entity.Order;
 import com.ll.exam.final__2022_10_08.app.order.exception.BuyerCanNotSeeOrderException;
 import com.ll.exam.final__2022_10_08.app.order.exception.OrderIdNotMatchedException;
 import com.ll.exam.final__2022_10_08.app.order.service.OrderService;
+import com.ll.exam.final__2022_10_08.util.Ut;
 
 import lombok.RequiredArgsConstructor;
 
@@ -106,10 +107,8 @@ public class OrderController {
 			"https://api.tosspayments.com/v1/payments/" + paymentKey, request, JsonNode.class);
 
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
-			JsonNode successNode = responseEntity.getBody();
-			model.addAttribute("orderId", successNode.get("orderId").asText());
-			String secret = successNode.get("secret").asText(); // 가상계좌의 경우 입금 callback 검증을 위해서 secret을 저장하기를 권장함
-			return "order/success";
+			orderService.payByTossPayments(order);
+			return Rq.redirectWithMsg("/order/" +order.getId(), "결제가 완료되었습니다.");
 		} else {
 			JsonNode failNode = responseEntity.getBody();
 			model.addAttribute("message", failNode.get("message").asText());
