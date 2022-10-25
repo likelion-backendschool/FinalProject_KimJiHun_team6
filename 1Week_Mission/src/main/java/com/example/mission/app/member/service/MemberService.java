@@ -34,7 +34,7 @@ public class MemberService {
 	}
 
 	@Transactional
-	public void join(String username, String password, String email) {
+	public Member join(String username, String password, String email, String nickname) {
 		if (memberRepository.existsByUsername(username)) {
 			throw  new AlreadyExistException();
 		}
@@ -43,10 +43,13 @@ public class MemberService {
 			.username(username)
 			.password(passwordEncoder.encode(password))
 			.email(email)
+			.nickname(nickname)
 			.build();
 		memberRepository.save(member);
 
 		sendMail(email, "회원가입 축하메일" , "멋사북에 가입한걸 환영합니다!🥳");
+
+		return member;
 	}
 
 	public Optional<Member> findByEmail(String email) {

@@ -42,7 +42,7 @@ public class MemberController {
 			return Rq.redirectWithMsg("/member/join", "회원가입을 실패했습니다.");
 		}
 
-		memberService.join(joinDto.getUsername(), joinDto.getPassword(), joinDto.getEmail());
+		memberService.join(joinDto.getUsername(), joinDto.getPassword(), joinDto.getEmail(), joinDto.getNickname());
 		return Rq.redirectWithMsg("/member/login", "회원가입이 완료됐습니다.");
 	}
 

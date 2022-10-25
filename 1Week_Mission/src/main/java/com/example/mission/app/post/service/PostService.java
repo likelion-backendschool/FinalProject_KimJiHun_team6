@@ -2,6 +2,8 @@ package com.example.mission.app.post.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.example.mission.app.member.entity.Member;
@@ -10,24 +12,30 @@ import com.example.mission.app.post.dto.PostModifyDto;
 import com.example.mission.app.post.entity.Post;
 import com.example.mission.app.post.repository.PostRepository;
 import com.example.mission.app.posthashtag.entity.PostHashtag;
+import com.example.mission.app.posthashtag.service.PostHashtagService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PostService {
 
 	private final PostRepository postRepository;
 	private final MemberRepository memberRepository;
-	public void write(Long id, String subject, String content, String contentHtml) {
-		Member member = memberRepository.findById(id).orElseThrow();
+	private final PostHashtagService postHashtagService;
+	@Transactional
+	public Post write(Member author, String subject, String content, String contentHtml, String postTagContents) {
 		Post post = Post.builder()
-			.author(member)
 			.subject(subject)
 			.content(content)
 			.contentHtml(contentHtml)
+			.author(author)
 			.build();
 		postRepository.save(post);
+
+		postHashtagService.applyPostTags(post, postTagContents);
+		return post;
 	}
 
 	public List<Post> findAll() {
