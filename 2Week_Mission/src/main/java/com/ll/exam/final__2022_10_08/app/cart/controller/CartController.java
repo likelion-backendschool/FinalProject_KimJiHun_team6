@@ -23,7 +23,7 @@ public class CartController {
 	private final CartService cartService;
 	private final Rq rq;
 
-	@GetMapping("/items")
+	@GetMapping("/list")
 	@PreAuthorize("isAuthenticated()")
 	public String showItems(Model model) {
 		Member buyer = rq.getMember();

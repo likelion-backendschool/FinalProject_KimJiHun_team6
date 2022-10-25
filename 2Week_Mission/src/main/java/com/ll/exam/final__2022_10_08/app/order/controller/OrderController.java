@@ -158,7 +158,7 @@ public class OrderController {
 		return Rq.redirectWithMsg("/order/" +order.getId(), "예치금으로 결제되었습니다.");
 	}
 
-	@PostMapping("/makeOrder")
+	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
 	public String makeOrder() {
 		Member member = rq.getMember();
