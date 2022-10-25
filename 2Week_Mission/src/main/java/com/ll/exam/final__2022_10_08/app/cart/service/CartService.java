@@ -1,6 +1,7 @@
 package com.ll.exam.final__2022_10_08.app.cart.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class CartService {
 	private final CartItemRepository cartItemRepository;
 
+	@Transactional
 	public CartItem addItem(Member buyer, Product product) {
 		CartItem oldCartItem = cartItemRepository.findByBuyerIdAndProductId(buyer.getId(), product.getId()).orElse(null);
 
@@ -55,6 +57,7 @@ public class CartService {
 		return cartItemRepository.findAllByBuyerId(buyer.getId());
 	}
 
+	@Transactional
 	public void removeItem(CartItem cartItem) {
 		cartItemRepository.delete(cartItem);
 	}
@@ -65,5 +68,13 @@ public class CartService {
 	) {
 		Product product = new Product(productId);
 		removeItem(buyer, product);
+	}
+
+	public Optional<CartItem> findItemById(long id) {
+		return cartItemRepository.findById(id);
+	}
+
+	public boolean buyerCanDelete(Member buyer, CartItem cartItem) {
+		return buyer.getId().equals(cartItem.getBuyer().getId());
 	}
 }
