@@ -25,7 +25,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
-public class PostHashTag extends BaseEntity {
+public class PostHashtag extends BaseEntity {
 	@ManyToOne
 	@ToString.Exclude
 	@OnDelete(action = OnDeleteAction.CASCADE)

@@ -9,6 +9,7 @@ import com.example.mission.app.member.repository.MemberRepository;
 import com.example.mission.app.post.dto.PostModifyDto;
 import com.example.mission.app.post.entity.Post;
 import com.example.mission.app.post.repository.PostRepository;
+import com.example.mission.app.posthashtag.entity.PostHashtag;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,6 +48,20 @@ public class PostService {
 
 	public void delete(Post post) {
 		postRepository.delete(post);
+	}
+
+	public List<Post> findAllForPrintByAuthorIdOrderByIdDesc(long authorId) {
+		List<Post> posts = postRepository.findAllByAuthorIdOrderByIdDesc(authorId);
+		loadForPrintData(posts);
+
+		return posts;
+	}
+
+	private void loadForPrintData(List<Post> posts) {
+		long[] ids = posts
+			.stream()
+			.mapToLong(Post::getId)
+			.toArray();
 	}
 
 	// Entity를 Dto로 변환해주는 메서드
