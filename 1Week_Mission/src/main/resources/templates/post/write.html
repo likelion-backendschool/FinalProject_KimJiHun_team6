@@ -15,9 +15,12 @@ function ArticleSave__submitForm(form) {
      }
      const editor = $(form).find(".toast-ui-editor").data("data-toast-editor");
      const markdown = editor.getMarkdown();
-     console.log(markdown);
+     const html = editor.getHTML().trim();
+
      form.content.value = markdown.trim();
-     if (form.content.value.length == 0) {
+     form.contentHtml.value = html;
+
+     if (form.content.value.length == 0 || form.contentHtml.value.length == 0) {
          alert("내용을 입력해주세요");
          editor.focus();
          return;
@@ -27,14 +30,23 @@ function ArticleSave__submitForm(form) {
  </script>
     <section>
         <div class="container px-3 mx-auto">
-            <h1 class="font-bold text-lg"><i class="fa-solid fa-pen"></i> 작성</h1>
-            <form method="POST" th:object="${writeDto}" onsubmit="ArticleSave__submitForm(this); return false;">
+            <h1 class="font-bold text-lg"><i class="fa-solid fa-pen"></i>글 작성</h1>
+            <form method="POST" th:object="${postWriteDto}" onsubmit="ArticleSave__submitForm(this); return false;">
                 <input type="hidden" name="content" />
+                <input type="hidden" name="contentHtml">
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">제목</span>
                     </label>
                     <input name="subject" type="text" maxlength="50" placeholder="제목을 입력해주세요." class="input input-bordered w-full max-w-xs" />
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">태그</span>
+                    </label>
+                    <input type="text" name="postTagContents" placeholder="#태그1 #태그2 #태그3 ..."
+                           class="input input-bordered"
+                           maxlength="50">
                 </div>
                 <div class="form-control w-full">
                     <label class="label">

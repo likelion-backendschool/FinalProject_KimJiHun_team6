@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.mission.app.base.dto.RsData;
 import com.example.mission.app.base.rq.Rq;
+import com.example.mission.app.member.dto.JoinDto;
 import com.example.mission.app.member.dto.ModifyDto;
 import com.example.mission.app.member.dto.PasswordModifyDto;
-import com.example.mission.app.member.service.MemberService;
-import com.example.mission.app.member.dto.JoinDto;
 import com.example.mission.app.member.entity.Member;
+import com.example.mission.app.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,7 +42,7 @@ public class MemberController {
 			return Rq.redirectWithMsg("/member/join", "회원가입을 실패했습니다.");
 		}
 
-		memberService.join(joinDto.getUsername(), joinDto.getPassword(), joinDto.getEmail());
+		memberService.join(joinDto.getUsername(), joinDto.getPassword(), joinDto.getEmail(), joinDto.getNickname());
 		return Rq.redirectWithMsg("/member/login", "회원가입이 완료됐습니다.");
 	}
 

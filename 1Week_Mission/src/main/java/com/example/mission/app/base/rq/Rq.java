@@ -60,4 +60,19 @@ public class Rq {
 		req.setAttribute("alertMsg", msg);
 		return "common/js";
 	}
+
+	public boolean isLogout() {
+		return member == null;
+	}
+
+	public boolean isLogined() {
+		return isLogout() == false;
+	}
+
+	public long getId() {
+		if (isLogout()) {
+			return 0;
+		}
+		return getMember().getId();
+	}
 }

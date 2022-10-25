@@ -1,6 +1,6 @@
 package com.example.mission.app.post.dto;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +13,13 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WriteDto {
-	@NotEmpty
+public class PostWriteDto {
+	@NotBlank
 	private String subject;
-	@NotEmpty
+	@NotBlank
 	private String content;
+	@NotBlank
+	private String contentHtml;
+	@NotBlank
+	private String postTagContents;
 }

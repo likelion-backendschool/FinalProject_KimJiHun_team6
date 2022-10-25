@@ -1,6 +1,8 @@
 package com.example.mission.app.post.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 import com.example.mission.app.base.entity.BaseEntity;
@@ -22,9 +24,15 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class Post extends BaseEntity {
 	private String subject;
+	@Column(columnDefinition = "LONGTEXT")
 	private String content;
+	@Column(columnDefinition = "LONGTEXT")
 	private String contentHtml;
 
-	@ManyToOne
-	private Member member;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Member author;
+
+	public String getForPrintContentHtml() {
+		return contentHtml.replaceAll("toastui-editor-ww-code-block-highlighting", "");
+	}
 }

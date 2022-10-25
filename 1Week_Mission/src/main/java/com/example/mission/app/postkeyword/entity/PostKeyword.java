@@ -1,4 +1,4 @@
-package com.example.mission.app.post.entity;
+package com.example.mission.app.postkeyword.entity;
 
 import javax.persistence.Entity;
 
@@ -16,8 +16,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
-public class PostHashTag extends BaseEntity {
-	private Long memberId;
-	private Long postId;
-	private Long postKeywordId;
+public class PostKeyword extends BaseEntity {
+	private String content;
 }

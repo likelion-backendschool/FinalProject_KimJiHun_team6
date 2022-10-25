@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.mission.app.base.rq.Rq;
+import com.example.mission.app.member.entity.Member;
 import com.example.mission.app.post.dto.PostModifyDto;
+import com.example.mission.app.post.dto.PostWriteDto;
 import com.example.mission.app.post.entity.Post;
-import com.example.mission.app.security.dto.MemberContext;
-import com.example.mission.app.post.dto.WriteDto;
 import com.example.mission.app.post.service.PostService;
+import com.example.mission.app.security.dto.MemberContext;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class PostController {
 
 	private final PostService postService;
-
+	private final Rq rq;
 	@GetMapping("/list")
 	public String postList(Model model) {
 		List<Post> posts = postService.findAll();
@@ -39,14 +41,16 @@ public class PostController {
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/write")
-	public String postWrite(WriteDto writeDto) {
+	public String postWrite(PostWriteDto postWriteDto) {
 		return "post/write";
 	}
 
 	@PostMapping("/write")
-	public String postWritePost(@AuthenticationPrincipal MemberContext memberContext, @Valid WriteDto writeDto) {
-		postService.write(memberContext.getId(), writeDto.getSubject(), writeDto.getContent());
-		return "redirect:/post/list";
+	public String postWritePost(@Valid PostWriteDto postWriteDto) {
+		Member author = rq.getMember();
+		Post post = postService.write(author, postWriteDto.getSubject(), postWriteDto.getContent(),
+			postWriteDto.getContentHtml(), postWriteDto.getPostTagContents());
+		return Rq.redirectWithMsg("/post/" + post.getId(), "%d번 글이 생성되었습니다.".formatted(post.getId()));
 	}
 
 	@GetMapping("/{id}")
@@ -67,7 +71,7 @@ public class PostController {
 
 	@PostMapping("/{id}/modify")
 	public String postModifyPost(@Valid PostModifyDto postModifyDto, @PathVariable("id") Long id) {
-		postService.modify(id, postModifyDto.getSubject(), postModifyDto.getContent());
+		postService.modify(id, postModifyDto.getSubject(), postModifyDto.getContent(), postModifyDto.getContentHtml());
 		return "redirect:/post/list";
 	}
 
@@ -75,7 +79,7 @@ public class PostController {
 	@GetMapping("/{id}/delete")
 	public String postDelete(@AuthenticationPrincipal MemberContext memberContext, @PathVariable("id") Long id) {
 		Post post = this.postService.findById(id);
-		if (!post.getMember().getUsername().equals(memberContext.getUsername())) {
+		if (!post.getAuthor().getUsername().equals(memberContext.getUsername())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
 		}
 		this.postService.delete(post);
