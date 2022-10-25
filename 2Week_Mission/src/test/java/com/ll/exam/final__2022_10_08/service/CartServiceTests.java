@@ -51,4 +51,27 @@ public class CartServiceTests {
 		assertThat(cartItem3).isNotNull();
 		assertThat(cartItem4).isNotNull();
 	}
+
+	@Test
+	@DisplayName("장바구니에서 제거")
+	void t2() {
+		Member buyer1 = memberRepository.findByUsername("user1").get();
+		Member buyer2 = memberRepository.findByUsername("user2").get();
+
+		Product product1 = productService.findById(1).get();
+		Product product2 = productService.findById(2).get();
+		Product product3 = productService.findById(3).get();
+		Product product4 = productService.findById(4).get();
+
+		cartService.removeItem(buyer1, product1);
+		cartService.removeItem(buyer1, product2);
+		cartService.removeItem(buyer2, product3);
+		cartService.removeItem(buyer2, product4);
+
+		assertThat(cartService.hasItem(buyer1, product1)).isFalse();
+		assertThat(cartService.hasItem(buyer1, product1)).isFalse();
+		assertThat(cartService.hasItem(buyer1, product1)).isFalse();
+		assertThat(cartService.hasItem(buyer1, product1)).isFalse();
+	}
+
 }
