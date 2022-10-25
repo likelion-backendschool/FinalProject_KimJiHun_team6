@@ -2,10 +2,12 @@ package com.ll.exam.final__2022_10_08.app.order.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ll.exam.final__2022_10_08.app.attr.service.AttrService;
 import com.ll.exam.final__2022_10_08.app.cart.entity.CartItem;
 import com.ll.exam.final__2022_10_08.app.cart.service.CartService;
 import com.ll.exam.final__2022_10_08.app.member.entity.Member;
@@ -85,5 +87,17 @@ public class OrderService {
 
 		order.setRefundDone();
 		orderRepository.save(order);
+	}
+
+	public Optional<Order> findForPrintById(long id) {
+		return findById(id);
+	}
+
+	private Optional<Order> findById(long id) {
+		return orderRepository.findById(id);
+	}
+
+	public boolean buyerCanSee(Member buyer, Order order) {
+		return buyer.getId().equals(order.getBuyer().getId());
 	}
 }
