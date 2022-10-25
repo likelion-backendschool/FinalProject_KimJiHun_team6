@@ -54,7 +54,7 @@
                 </div>
 
                 <div>
-                    <div>
+                    <div th:if="${order.payable}">
                         보유 예치금 : [[${actorRestCash}]]
                     </div>
                     <div th:with="maxUseRestCash = ${order.calculatePayPrice > actorRestCash ? actorRestCash : order.calculatePayPrice}">
@@ -73,8 +73,6 @@
                     </div>
                     <button th:if="${order.payable}" onclick="payment();" class="btn btn-sm btn-primary">카드결제</button>
                     <span th:if="${order.isPaid}">결제완료</span>
-                </div>
-                <div>
                     <div>
                         <span>PG결제가격 : </span>
                         <span id="PaymentForm__pgPayPriceDisplay">

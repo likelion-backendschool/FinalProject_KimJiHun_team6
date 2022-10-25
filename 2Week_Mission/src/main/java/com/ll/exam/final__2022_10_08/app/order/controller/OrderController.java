@@ -157,4 +157,12 @@ public class OrderController {
 
 		return Rq.redirectWithMsg("/order/" +order.getId(), "예치금으로 결제되었습니다.");
 	}
+
+	@PostMapping("/makeOrder")
+	@PreAuthorize("isAuthenticated()")
+	public String makeOrder() {
+		Member member = rq.getMember();
+		Order order = orderService.createFromCart(member);
+		return Rq.redirectWithMsg("/order/" + order.getId(), "%d번 주문이 생성되었습니다.".formatted(order.getId()));
+	}
 }
