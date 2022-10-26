@@ -125,4 +125,8 @@ public class OrderService {
 	public boolean buyerCanPayment(Member actor, Order order) {
 		return buyerCanSee(actor, order);
 	}
+
+	public void cancel(Order order) {
+		orderRepository.delete(order);
+	}
 }

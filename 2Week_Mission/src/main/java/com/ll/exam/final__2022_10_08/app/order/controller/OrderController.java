@@ -165,4 +165,12 @@ public class OrderController {
 		Order order = orderService.createFromCart(member);
 		return Rq.redirectWithMsg("/order/" + order.getId(), "%d번 주문이 생성되었습니다.".formatted(order.getId()));
 	}
+
+	@PostMapping("/{id}/cancel")
+	@PreAuthorize("isAuthenticated()")
+	public String cancelOrder(@PathVariable long id) {
+		Order order = orderService.findForPrintById(id).get();
+		orderService.cancel(order);
+		return Rq.redirectWithMsg("/product/list","%d번 주문이 취소되었습니다.".formatted(order.getId()));
+	}
 }
