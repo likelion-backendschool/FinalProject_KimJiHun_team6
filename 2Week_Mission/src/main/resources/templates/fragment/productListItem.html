@@ -37,17 +37,18 @@
                 </div>
             </div>
             <div class="card-actions justify-end">
-                <form id="addItem" name="addItem" method="POST" th:action="@{|/cart/add/${product.id}|}">
-                    <a th:if="${@rq.isLogined()}" type="submit" onclick="document.getElementById('addItem').submit();" class="btn btn-sm">
-                        <i class="fa-solid fa-cart-plus"></i>
-                        <span class="ml-2">장바구니</span>
-                    </a>
+                <form method="post" th:action="@{|/cart/add/${product.id}|}">
+                    <button th:if="${@rq.isLogined()}" class="btn gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                        장바구니
+                    </button>
                 </form>
-
-                <a th:href="@{|/product/${product.id}|}" class="btn btn-sm">
-                    <i class="fa-solid fa-eye"></i>
-                    <span class="ml-2">보기</span>
-                </a>
+                <form th:action="@{|/product/${product.id}|}">
+                    <button class="btn gap-2">
+                        <i class="fa-solid fa-eye"></i>
+                        <span class="ml-2">보기</span>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
