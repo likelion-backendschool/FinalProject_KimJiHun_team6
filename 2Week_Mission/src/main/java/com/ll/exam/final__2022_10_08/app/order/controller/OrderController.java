@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,8 @@ public class OrderController {
 	private final RestTemplate restTemplate = new RestTemplate();
 	private final ObjectMapper objectMapper;
 	private final Rq rq;
+	@Value("${custom.toss.serverkey}")
+	String SECRET_KEY;
 
 	@GetMapping("/{id}")
 	@PreAuthorize("isAuthenticated()")
@@ -79,8 +82,6 @@ public class OrderController {
 			}
 		});
 	}
-
-	private final String SECRET_KEY = "test_sk_O6BYq7GWPVvj1BWNkbaVNE5vbo1d";
 
 	@RequestMapping("/{id}/success")
 	public String confirmPayment(
