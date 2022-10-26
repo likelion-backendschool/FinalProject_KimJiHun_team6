@@ -7,11 +7,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ll.exam.final__2022_10_08.app.attr.service.AttrService;
 import com.ll.exam.final__2022_10_08.app.cart.entity.CartItem;
 import com.ll.exam.final__2022_10_08.app.cart.service.CartService;
 import com.ll.exam.final__2022_10_08.app.member.entity.Member;
 import com.ll.exam.final__2022_10_08.app.member.service.MemberService;
+import com.ll.exam.final__2022_10_08.app.mybook.service.MyBookService;
 import com.ll.exam.final__2022_10_08.app.order.entity.Order;
 import com.ll.exam.final__2022_10_08.app.order.entity.OrderItem;
 import com.ll.exam.final__2022_10_08.app.order.repository.OrderRepository;
@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class OrderService {
 	private final MemberService memberService;
 	private final CartService cartService;
+	private final MyBookService myBookService;
 	private final OrderRepository orderRepository;
 
 	@Transactional
@@ -68,7 +69,6 @@ public class OrderService {
 	@Transactional
 	public void payByRestCashOnly(Order order) {
 		Member buyer = order.getBuyer();
-
 		long restCash = buyer.getRestCash();
 
 		int payPrice = order.calculatePayPrice();
@@ -80,6 +80,7 @@ public class OrderService {
 		memberService.addCash(buyer, payPrice * -1, "주문__%d__사용__예치금".formatted(order.getId()));
 
 		order.setPaymentDone();
+		myBookService.applyItem(buyer, order.getOrderItems());
 		orderRepository.save(order);
 	}
 
@@ -117,6 +118,7 @@ public class OrderService {
 		}
 
 		order.setPaymentDone();
+		myBookService.applyItem(buyer, order.getOrderItems());
 		orderRepository.save(order);
 	}
 

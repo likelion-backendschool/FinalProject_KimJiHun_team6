@@ -34,7 +34,6 @@ import com.ll.exam.final__2022_10_08.app.order.exception.BuyerCanNotSeeOrderExce
 import com.ll.exam.final__2022_10_08.app.order.exception.OrderIdNotMatchedException;
 import com.ll.exam.final__2022_10_08.app.order.exception.OrderNotEnoughRestCashException;
 import com.ll.exam.final__2022_10_08.app.order.service.OrderService;
-import com.ll.exam.final__2022_10_08.util.Ut;
 
 import lombok.RequiredArgsConstructor;
 
