@@ -2,6 +2,8 @@ package com.ll.exam.final__2022_10_08.app.rebate.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +20,12 @@ import com.ll.exam.final__2022_10_08.app.rebate.service.RebateService;
 import com.ll.exam.final__2022_10_08.util.Ut;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/adm/rebate")
 @RequiredArgsConstructor
+@Slf4j
 public class AdmRebateController {
 	private final RebateService rebateService;
 
@@ -34,8 +38,9 @@ public class AdmRebateController {
 	@PostMapping("/makeData")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public String makeData(String yearMonth) {
-		rebateService.makeDate(yearMonth);
-		return Rq.redirectWithMsg("/adm/rebate/rebateOrderItemList?yearMonth="+yearMonth,"정산데이터가 성공적으로 생성되었습니다.");
+		RsData makeDateRsData = rebateService.makeDate(yearMonth);
+		String redirect = makeDateRsData.addMsgToUrl("redirect:/adm/rebate/rebateOrderItemList?yearMonth=" + yearMonth);
+		return redirect;
 	}
 
 	@GetMapping("/rebateOrderItemList")
@@ -54,10 +59,17 @@ public class AdmRebateController {
 
 	@PostMapping("/rebateOne/{orderItemId}")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@ResponseBody
-	public String rebateOne(@PathVariable long orderItemId) {
+	public String rebateOne(@PathVariable long orderItemId, HttpServletRequest req) {
 		RsData rebateRsData = rebateService.rebate(orderItemId);
 
-		return rebateRsData.getMsg();
+		String referer = req.getHeader("Referer");
+		log.debug("referer : " + referer);
+		String yearMonth = Ut.url.getQueryParamValue(referer, "yearMonth", "");
+
+		String redirect = "redirect:/adm/rebate/rebateOrderItemList?yearMonth=" + yearMonth;
+
+		redirect = rebateRsData.addMsgToUrl(redirect);
+
+		return redirect;
 	}
 }

@@ -36,6 +36,7 @@
                         <td th:text="${item.refundPrice}"></td>
                         <td th:text="${item.sellerName}"></td>
                         <td th:text="${item.calculateRebatePrice}"></td>
+                        <td th:text="${item.rebateDate}"></td>
                         <td th:text="${item.rebateCashLog?.id}"></td>
                         <td>
                             <span th:text="${item.rebateCashLog?.id}"></span>
@@ -43,10 +44,7 @@
                         <td>
                             <a th:if="${item.rebateAvailable}" href="javascript:;" onclick="$(this).next().submit();"
                                class="btn btn-xs">건별정산</a>
-                            <form method="POST" th:action="@{|/adm/rebate/rebateOne/${item.orderItem.id}|}"
-                                  target="_blank" hidden>
-
-                            </form>
+                            <form method="POST" th:action="@{|/adm/rebate/rebateOne/${item.orderItem.id}|}" hidden></form>
                         </td>
                     </tr>
                     </tbody>

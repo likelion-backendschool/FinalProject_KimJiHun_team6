@@ -159,7 +159,7 @@ public class MemberService {
     }
 
     @Transactional
-    public RsData<Map<String, Object>> addCash(Member member, long price, String eventType) {
+    public RsData<AddCashRsDataBody> addCash(Member member, long price, String eventType) {
         CashLog cashLog = cashService.addCash(member, price, eventType);
 
         long newRestCash = member.getRestCash() + cashLog.getPrice();
@@ -169,10 +169,7 @@ public class MemberService {
         return RsData.of(
             "S-1",
             "성공",
-            Ut.mapOf(
-                "cashLog", cashLog,
-                "newRestCash", newRestCash
-            )
+            new AddCashRsDataBody(cashLog, newRestCash)
         );
     }
 
