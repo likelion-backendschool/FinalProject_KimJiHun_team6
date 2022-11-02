@@ -6,13 +6,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ll.exam.final__2022_10_08.app.base.dto.RsData;
 import com.ll.exam.final__2022_10_08.app.base.rq.Rq;
 import com.ll.exam.final__2022_10_08.app.rebate.entity.RebateOrderItem;
 import com.ll.exam.final__2022_10_08.app.rebate.service.RebateService;
+import com.ll.exam.final__2022_10_08.util.Ut;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdmRebateController {
 	private final RebateService rebateService;
+
 	@GetMapping("/makeData")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public String showMakeData() {
@@ -31,7 +35,7 @@ public class AdmRebateController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public String makeData(String yearMonth) {
 		rebateService.makeDate(yearMonth);
-		return Rq.redirectWithMsg("/adm/rebate/rebateOrderItemList?yearMonth=" + yearMonth, "정산데이터가 성공적으로 생성되었습니다.");
+		return Rq.redirectWithMsg("/adm/rebate/rebateOrderItemList?yearMonth="+yearMonth,"정산데이터가 성공적으로 생성되었습니다.");
 	}
 
 	@GetMapping("/rebateOrderItemList")
@@ -46,5 +50,14 @@ public class AdmRebateController {
 		model.addAttribute("items", items);
 
 		return "adm/rebate/rebateOrderItemList";
+	}
+
+	@PostMapping("/rebateOne/{orderItemId}")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@ResponseBody
+	public String rebateOne(@PathVariable long orderItemId) {
+		RsData rebateRsData = rebateService.rebate(orderItemId);
+
+		return rebateRsData.getMsg();
 	}
 }

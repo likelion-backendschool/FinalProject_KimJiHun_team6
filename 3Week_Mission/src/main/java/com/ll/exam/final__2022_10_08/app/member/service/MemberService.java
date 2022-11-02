@@ -23,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -158,7 +159,7 @@ public class MemberService {
     }
 
     @Transactional
-    public RsData<AddCashRsDataBody> addCash(Member member, long price, String eventType) {
+    public RsData<Map<String, Object>> addCash(Member member, long price, String eventType) {
         CashLog cashLog = cashService.addCash(member, price, eventType);
 
         long newRestCash = member.getRestCash() + cashLog.getPrice();
@@ -166,9 +167,12 @@ public class MemberService {
         memberRepository.save(member);
 
         return RsData.of(
-                "S-1",
-                "성공",
-                new AddCashRsDataBody(cashLog, newRestCash)
+            "S-1",
+            "성공",
+            Ut.mapOf(
+                "cashLog", cashLog,
+                "newRestCash", newRestCash
+            )
         );
     }
 

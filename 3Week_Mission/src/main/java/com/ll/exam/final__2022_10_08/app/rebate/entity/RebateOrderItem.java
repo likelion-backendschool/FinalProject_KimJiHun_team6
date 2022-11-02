@@ -45,11 +45,27 @@ public class RebateOrderItem extends BaseEntity {
 	@JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Product product;
 
+	// 가격
+	private int price; // 권장판매가
+	private int salePrice; // 실제판매가
+	private int wholesalePrice; // 도매가
+	private int pgFee; // 결제대행사 수수료
+	private int payPrice; // 결제금액
+	private int refundPrice; // 환불금액
+	private boolean isPaid; // 결제여부
+	private LocalDateTime payDate; // 결제날짜
+
 	@ManyToOne(fetch = LAZY)
 	@ToString.Exclude
 	@JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private CashLog rebateCashLog; // 정산에 관련된 환급지급내역
 	private LocalDateTime rebateDate;
+
+	// 상품
+	private String productSubject;
+
+	// 주문품목
+	private LocalDateTime orderItemCreateDate;
 
 	// 구매자 회원
 	@ManyToOne(fetch = LAZY)
@@ -64,21 +80,6 @@ public class RebateOrderItem extends BaseEntity {
 	@JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Member seller;
 	private String sellerName;
-
-	// 가격
-	private int price; // 권장판매가
-	private int salePrice; // 실제판매가
-	private int wholesalePrice; // 도매가
-	private int pgFee; // 결제대행사 수수료
-	private int payPrice; // 결제금액
-	private int refundPrice; // 환불금액
-	private boolean isPaid; // 결제여부
-	private LocalDateTime payDate; // 결제날짜
-	// 상품
-	private String productSubject;
-
-	// 주문품목
-	private LocalDateTime orderItemCreateDate;
 
 	public RebateOrderItem(OrderItem orderItem) {
 		this.orderItem = orderItem;
@@ -109,7 +110,7 @@ public class RebateOrderItem extends BaseEntity {
 	}
 
 	public int calculateRebatePrice() {
-		if ( isRebateAvailable() == false ) {
+		if (refundPrice > 0) {
 			return 0;
 		}
 
@@ -117,10 +118,15 @@ public class RebateOrderItem extends BaseEntity {
 	}
 
 	public boolean isRebateAvailable() {
-		if ( refundPrice > 0 ) {
+		if (refundPrice > 0 || rebateDate != null) {
 			return false;
 		}
 
 		return true;
+	}
+
+	public void setRebateDone(long cashLogId) {
+		rebateDate = LocalDateTime.now();
+		this.rebateCashLog = new CashLog(cashLogId);
 	}
 }
