@@ -1,7 +1,5 @@
 package com.ll.exam.final__2022_10_08.app.rebate.controller;
 
-import java.time.LocalDateTime;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +7,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ll.exam.final__2022_10_08.util.Ut;
+import com.ll.exam.final__2022_10_08.app.rebate.service.RebateService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/adm/rebate")
+@RequiredArgsConstructor
 public class AdmRebateController {
+	private final RebateService rebateService;
 	@GetMapping("/makeData")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public String showMakeData() {
@@ -24,13 +26,7 @@ public class AdmRebateController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@ResponseBody
 	public String makeData(String yearMonth) {
-		int monthEndDay = Ut.date.getEndDayOf(yearMonth);
-
-		String fromDateStr = yearMonth + "-01 00:00:00.000000";
-		String toDateStr = yearMonth + "-%02d 23:59:59.999999".formatted(monthEndDay);
-		LocalDateTime fromDate = Ut.date.parse(fromDateStr);
-		LocalDateTime toDate = Ut.date.parse(toDateStr);
-
-		return "fromDateStr : %s<br>toDateStr : %s".formatted(fromDateStr, toDateStr);
+		rebateService.makeDate(yearMonth);
+		return "성공";
 	}
 }
