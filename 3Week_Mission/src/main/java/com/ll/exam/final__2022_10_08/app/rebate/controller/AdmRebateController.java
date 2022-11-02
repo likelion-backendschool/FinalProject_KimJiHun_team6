@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ll.exam.final__2022_10_08.app.base.rq.Rq;
 import com.ll.exam.final__2022_10_08.app.rebate.service.RebateService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,18 @@ public class AdmRebateController {
 
 	@PostMapping("/makeData")
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@ResponseBody
 	public String makeData(String yearMonth) {
 		rebateService.makeDate(yearMonth);
-		return "성공";
+		return Rq.redirectWithMsg("/adm/rebate/rebateOrderItemList?yearMonth=" + yearMonth, "정산데이터가 성공적으로 생성되었습니다.");
+	}
+
+	@GetMapping("/rebateOrderItemList")
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public String showRebateOrderItemList(String yearMonth) {
+		if (yearMonth == null) {
+			yearMonth = "2022-10";
+		}
+
+		return "adm/rebate/rebateOrderItemList";
 	}
 }
