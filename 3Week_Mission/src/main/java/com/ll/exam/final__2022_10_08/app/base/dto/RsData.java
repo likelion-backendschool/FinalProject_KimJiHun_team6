@@ -1,6 +1,8 @@
 package com.ll.exam.final__2022_10_08.app.base.dto;
 
 
+import com.ll.exam.final__2022_10_08.util.Ut;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,5 +37,13 @@ public class RsData<T> {
 
     public boolean isFail() {
         return isSuccess() == false;
+    }
+
+    public String addMsgToUrl(String url) {
+        if ( isFail() ) {
+            return Ut.url.modifyQueryParam(url, "errorMsg", getMsg());
+        }
+
+        return Ut.url.modifyQueryParam(url, "msg", getMsg());
     }
 }

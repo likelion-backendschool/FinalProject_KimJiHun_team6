@@ -23,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -166,9 +167,9 @@ public class MemberService {
         memberRepository.save(member);
 
         return RsData.of(
-                "S-1",
-                "성공",
-                new AddCashRsDataBody(cashLog, newRestCash)
+            "S-1",
+            "성공",
+            new AddCashRsDataBody(cashLog, newRestCash)
         );
     }
 
