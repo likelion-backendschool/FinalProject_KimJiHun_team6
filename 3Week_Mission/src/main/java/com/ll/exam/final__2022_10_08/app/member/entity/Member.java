@@ -60,6 +60,10 @@ public class Member extends BaseEntity {
         if (StringUtils.hasText(nickname)) {
             authorities.add(new SimpleGrantedAuthority("AUTHOR"));
         }
+        // user1은 admin
+        if (getName().equals("user1")) {
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        }
 
         return authorities;
     }
